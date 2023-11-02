@@ -18,7 +18,7 @@ class printer():
     def create_way(self, name):
         try:
             # rentre dans le dossier asso et crée le dossier du nom du site
-            os.chdir('../asso')
+            os.chdir('../frontend')
             os.mkdir(name)
             os.chdir(name)
             # crée les dossiers css et img
