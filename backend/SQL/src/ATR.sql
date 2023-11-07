@@ -11,6 +11,13 @@ CREATE TABLE Users (
     Permission ENUM('_dev', 'superadmin', 'admin', 'support', 'president', 'membresAsso', 'user')
 );
 
+CREATE TABLE tokens (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  token VARCHAR(200) NOT NULL
+);
+
+
 -- Création de la table AssoTable
 CREATE TABLE AssoTable (
     id INT PRIMARY KEY,
