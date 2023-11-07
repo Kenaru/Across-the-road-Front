@@ -1,0 +1,106 @@
+/* Styles de base pour les écrans larges */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background: url('fond_arc_en_ciel.png') no-repeat left center fixed;
+    background-size: cover;
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+
+img {
+    padding-top: 20%; ;
+}
+
+.left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    padding: 20px;
+}
+
+.right-panel {
+    flex: 1;
+    padding: 5%;
+    border-radius: 21px;
+    justify-content: center;
+}
+
+form {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 21px;
+    margin: 10%;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-color: black;
+    border-radius: 100px;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+h1 {
+    font-size: 24px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+button {
+    padding: 20px;
+    background-color: transparent;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 23.6px;
+}
+
+a#forgot-password {
+    text-align: start;
+    text-decoration: none;
+    color: #4f4f4f;
+    font-size: 14.3px;
+    margin-bottom: 10px;
+}
+
+a#forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Styles spécifiques aux écrans plus petits (ajustez les valeurs selon vos besoins) */
+@media (max-width: 768px) {
+    body {
+        background: url('fond_arc_en_ciel.png') no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .left-panel, .right-panel {
+        flex: 1;
+        
+    }
+
+    form {
+        margin: 5%;
+    }
+
+    input {
+        width: 98%;
+    }
+}
