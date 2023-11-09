@@ -7,7 +7,7 @@ app = Flask(__name__)
 def hello():
     testroad = os.getcwd()
     print(testroad)
-    if str(testroad) != '/mnt/c/MAMP/htdocs/Across-the-road/frontend/test':
+    if str(testroad) != '/mnt/c/MAMP/htdocs/Across-the-road/frontend/home':
         template = os.chdir('../frontend/test')
         template = open('index.html', 'r')
     else:
