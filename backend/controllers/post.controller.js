@@ -5,7 +5,7 @@ exports.login_user = async (req, res) => {
       
         try {
           const [rows] = await connection.execute(
-            'SELECT * FROM users WHERE Mail = ? AND Password = ?',
+            'SELECT * FROM Users WHERE Mail = ? AND Password = ?',
             [mail, password]
           );
       
