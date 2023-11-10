@@ -24,3 +24,4 @@ app.use('/api/get', get);
 
 // Lancer le serveur
 app.listen(port, () => console.log('Le serveur fonctionne sur le port ' + port));
+console.log('Lien de connexion au serveur http://127.0.0.1:5500');
