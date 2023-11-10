@@ -79,6 +79,17 @@ a#forgot-password {
 a#forgot-password:hover {
     text-decoration: underline;
 }
+a#firstConnect {
+    text-align: start;
+    text-decoration: none;
+    color: #4f4f4f;
+    font-size: 14.3px;
+    margin-bottom: 10px;
+}
+
+a#firstConnect:hover {
+    text-decoration: underline;
+}
 
 /* Styles spécifiques aux écrans plus petits (ajustez les valeurs selon vos besoins) */
 @media (max-width: 768px) {
