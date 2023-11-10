@@ -36,3 +36,4 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Erreur lors de la récupération des données :', error);
   });
 });
+
