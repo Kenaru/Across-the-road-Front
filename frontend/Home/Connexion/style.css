@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background: url('fond_arc_en_ciel.png') no-repeat left center fixed;
+    background: url('../../img/fond_arc_en_ciel.png') no-repeat left center fixed;
     background-size: cover;
     display: flex;
     height: 100vh;
@@ -15,9 +15,9 @@ body {
     flex: 1;
 }
 
-img {
+/* img {
     padding-top: 20%; ;
-}
+} */
 
 .left-panel {
     flex: 1;
