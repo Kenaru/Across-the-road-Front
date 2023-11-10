@@ -1,12 +1,12 @@
 const db = require('../config/db');
 
 exports.login_user = async (req, res) => {
-        const { username, password } = req.body;
+        const { mail, password } = req.body;
       
         try {
           const [rows] = await connection.execute(
-            'SELECT * FROM users WHERE username = ? AND password = ?',
-            [username, password] //A remplacer
+            'SELECT * FROM users WHERE Mail = ? AND Password = ?',
+            [mail, password]
           );
       
           if (rows.length > 0) {
@@ -21,4 +21,3 @@ exports.login_user = async (req, res) => {
           res.status(500).json({ success: false, message: 'Internal Server Error' });
         }
     };
-    
