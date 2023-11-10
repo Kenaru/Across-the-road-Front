@@ -26,3 +26,42 @@ exports.getCountUsers = async (req, res) => {
     res.status(500).send('Erreur du serveur');
   }
 };
+
+exports.getCountAssoOnline = async (req, res) => {
+  try {
+    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    const [results] = await db.query('SELECT COUNT(*) AS AssoOnline FROM AssoTable');
+
+    // Renvoyer les résultats en tant que JSON
+    res.json(results[0]); // Assurez-vous de renvoyer le premier résultat (premier élément du tableau) si disponible
+  } catch (error) {
+    console.error('Erreur lors de la récupération des utilisateurs :', error);
+    res.status(500).send('Erreur du serveur');
+  }
+};
+
+exports.getprezOnline = async (req, res) => {
+  try {
+    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    const [results] = await db.query('SELECT COUNT(*) AS prezOnline FROM AssoLead');
+
+    // Renvoyer les résultats en tant que JSON
+    res.json(results[0]); // Assurez-vous de renvoyer le premier résultat (premier élément du tableau) si disponible
+  } catch (error) {
+    console.error('Erreur lors de la récupération des utilisateurs :', error);
+    res.status(500).send('Erreur du serveur');
+  }
+};
+
+exports.getAdminOnline = async (req, res) => {
+  try {
+    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    const [results] = await db.query("SELECT COUNT(*) AS AdminOnline FROM `Users` WHERE `Permission` = '_dev'");
+
+    // Renvoyer les résultats en tant que JSON
+    res.json(results[0]); // Assurez-vous de renvoyer le premier résultat (premier élément du tableau) si disponible
+  } catch (error) {
+    console.error('Erreur lors de la récupération des utilisateurs :', error);
+    res.status(500).send('Erreur du serveur');
+  }
+};

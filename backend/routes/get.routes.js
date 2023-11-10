@@ -7,7 +7,10 @@ const getController = require('../controllers/get.controller');
 
 // Exemple de route pour récupérer le compte de la table AssoWebsite
 router.get('/countAssoWebsite', getController.getCountAssoWebsite);
+router.get('/countAssoOnline', getController.getCountAssoOnline);
 router.get('/UsersCount', getController.getCountUsers);
+router.get('/CountprezOnline', getController.getprezOnline);
+router.get('/AdminOnline', getController.getAdminOnline);
 
 // Ajoutez d'autres routes selon vos besoins...
 
