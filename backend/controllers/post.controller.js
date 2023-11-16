@@ -3,7 +3,7 @@ const db = require('../config/db');
 
 exports.login_user = async (req, res) => {
     const { mail, password } = req.body;
-
+    
     try {
         // Utilisation de la méthode query pour permettre les requêtes préparées
         const [rows] = await db.query('SELECT * FROM Users WHERE Mail = ? AND Password = ?', [mail, password]);

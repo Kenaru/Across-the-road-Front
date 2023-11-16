@@ -1,4 +1,5 @@
-// Ajoutez ce script dans votre fichier script.js
+const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
+
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('login-form');
 
@@ -7,15 +8,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mail = document.getElementById('mail').value;
         const password = document.getElementById('password').value;
-
+        
         // Envoie les données au serveur
-        fetch('/api/post/login', {
+        fetch(`${apiURL}/api/post/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ mail, password }),
         })
+        console.log(response)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
