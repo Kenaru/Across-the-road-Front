@@ -1,4 +1,5 @@
-// Ajoutez ce script dans votre fichier script.js
+const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
+
 document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('login-form');
 
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Envoie les données au serveur
-        fetch('/api/post/register', {
+        fetch(`${apiURL}/api/post/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
