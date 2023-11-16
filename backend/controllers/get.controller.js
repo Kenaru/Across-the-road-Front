@@ -1,4 +1,3 @@
-// controllers/get.controller.js
 const db = require('../config/db');
 
 exports.getCountAssoWebsite = async (req, res) => {
@@ -16,7 +15,7 @@ exports.getCountAssoWebsite = async (req, res) => {
 
 exports.getCountUsers = async (req, res) => {
   try {
-    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    // Exécutez la requête SQL pour compter les lignes dans la table Users
     const [results] = await db.query('SELECT COUNT(*) AS nbrUser FROM Users');
 
     // Renvoyer les résultats en tant que JSON
@@ -29,7 +28,7 @@ exports.getCountUsers = async (req, res) => {
 
 exports.getCountAssoOnline = async (req, res) => {
   try {
-    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    // Exécutez la requête SQL pour compter les lignes dans la table AssoTable
     const [results] = await db.query('SELECT COUNT(*) AS AssoOnline FROM AssoTable');
 
     // Renvoyer les résultats en tant que JSON
@@ -42,7 +41,7 @@ exports.getCountAssoOnline = async (req, res) => {
 
 exports.getprezOnline = async (req, res) => {
   try {
-    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    // Exécutez la requête SQL pour compter les lignes dans la table AssoLead
     const [results] = await db.query('SELECT COUNT(*) AS prezOnline FROM AssoLead');
 
     // Renvoyer les résultats en tant que JSON
@@ -55,7 +54,7 @@ exports.getprezOnline = async (req, res) => {
 
 exports.getAdminOnline = async (req, res) => {
   try {
-    // Exécutez la requête SQL pour compter les lignes dans la table AssoWebsite
+    // Exécutez la requête SQL pour compter les lignes dans la table Users avec la permission '_dev'
     const [results] = await db.query("SELECT COUNT(*) AS AdminOnline FROM `Users` WHERE `Permission` = '_dev'");
 
     // Renvoyer les résultats en tant que JSON
