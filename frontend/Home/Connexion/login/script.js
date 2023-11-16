@@ -17,18 +17,22 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ mail, password }),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Connexion réussie!');
-                // Redirigez l'utilisateur ou effectuez d'autres actions nécessaires après la connexion réussie.
-            } else {
-                alert('Échec de la connexion. Vérifiez vos informations d\'identification.');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const resultElement = document.getElementById('response');
+            fetch(`${apiURL}/api/post/login`)
+        .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
             }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la demande:', error);
-            alert('Erreur lors de la demande. Veuillez réessayer.');
+            return response.json();
+          })
+          .then(data => {
+            resultElement.textContent = `Login Succes`;
+          })
+          .catch(error => {
+            console.error('Login pas succes', error);
+          });
         });
     });
 });
