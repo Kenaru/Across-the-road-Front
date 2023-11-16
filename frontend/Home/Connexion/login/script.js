@@ -1,30 +1,33 @@
-const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
-const mail = document.getElementById('mail').value;
-const password = document.getElementById('password').value;
+// Ajoutez ce script dans votre fichier script.js
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('login-form');
 
+    loginForm.addEventListener('submit', function (event) {
+        event.preventDefault();
 
-document.getElementById('login-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Empêche le rechargement de la page
+        const mail = document.getElementById('mail').value;
+        const password = document.getElementById('password').value;
 
-    // Code de gestion de la soumission du formulaire ici
+        // Envoie les données au serveur
+        fetch('/api/post/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ mail, password }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Connexion réussie!');
+                // Redirigez l'utilisateur ou effectuez d'autres actions nécessaires après la connexion réussie.
+            } else {
+                alert('Échec de la connexion. Vérifiez vos informations d\'identification.');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la demande:', error);
+            alert('Erreur lors de la demande. Veuillez réessayer.');
+        });
+    });
 });
-
-fetch('/api/post/login', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ mail, password }),
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        // Rediriger l'utilisateur vers home.html en cas de succès
-        window.location.href = '/home.html';
-    } else {
-        // Afficher un message d'erreur ou prendre d'autres mesures nécessaires
-        alert('Mail/Mot de passe incorrect');
-        console.error('Login failed:', data.message);
-    }
-})
-.catch(error => console.error('Error during login:', error));

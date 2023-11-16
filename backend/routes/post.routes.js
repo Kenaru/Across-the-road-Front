@@ -6,6 +6,7 @@
     // Définir les routes pour les requêtes qui commencent par /api/post
 
     router.post('/login', postController.login_user);
+    router.post('/register', postController.register_user);
 
     // Ajoutez d'autres routes selon vos besoins...
 
