@@ -2,13 +2,14 @@ const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
 
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('login-form');
+    const responseDiv = document.getElementById('response');
 
     loginForm.addEventListener('submit', function (event) {
         event.preventDefault();
 
         const mail = document.getElementById('mail').value;
         const password = document.getElementById('password').value;
-        
+
         // Envoie les données au serveur
         fetch(`${apiURL}/api/post/login`, {
             method: 'POST',
@@ -17,22 +18,20 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify({ mail, password }),
         })
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const resultElement = document.getElementById('response');
-            fetch(`${apiURL}/api/post/login`)
-        .then(response => {
-            if (!response.ok) {
-              throw new Error(`HTTP error! Status: ${response.status}`);
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Login réussi, redirigez vers la page index.html
+                window.location.href = '../../index.html';
+            } else {
+                // Login échoué
+                responseDiv.innerHTML = '<p>Login échoué. Vérifiez votre email et/ou mot de passe.</p>';
             }
-            return response.json();
-          })
-          .then(data => {
-            resultElement.textContent = `Login Succes`;
-          })
-          .catch(error => {
-            console.error('Login pas succes', error);
-          });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la requête au serveur:', error);
+            // Affichez un message d'erreur générique
+            responseDiv.innerHTML = '<p>Une erreur s\'est produite. Veuillez réessayer plus tard.</p>';
         });
     });
 });

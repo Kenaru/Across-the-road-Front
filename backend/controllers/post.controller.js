@@ -21,11 +21,37 @@ exports.login_user = async (req, res) => {
 };
 
 exports.register_user = async (req, res) => {
-    const { mail, lastName, firstName, birthday, phoneNumber, password } = req.body;
+    const { mail, lastName, firstName, birthday, phoneNumber, password, confirmPassword } = req.body;
 
     try {
-        // Utilisation du pool pour exécuter les requêtes
-        const [rows] = await db.query('INSERT INTO users (Mail, LastName, FirstName, Birthday, PhoneNumber, Password) VALUES (?, ?, ?, ?, ?, ?)', [mail, lastName, firstName, birthday, phoneNumber, password]);
+        // Vérifier si le mail est déjà utilisé
+        const [existingUsers] = await db.query('SELECT * FROM users WHERE Mail = ?', [mail]);
+
+        if (existingUsers.length > 0) {
+            // Le mail est déjà enregistré
+            return res.status(400).json({ success: false, message: 'Mail déjà enregistré' });
+        }
+
+        // Vérifier que les mots de passe correspondent
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+        }
+
+        // Vérifier que le mot de passe fait au moins 12 caractères
+        if (password.length < 12) {
+            return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 12 caractères' });
+        }
+
+        // Vérifier si le numéro de téléphone est déjà utilisé
+        const [existingPhoneNumbers] = await db.query('SELECT * FROM users WHERE PhoneNumber = ?', [phoneNumber]);
+
+        if (existingPhoneNumbers.length > 0) {
+            // Le numéro de téléphone est déjà utilisé
+            return res.status(400).json({ success: false, message: 'Numéro de téléphone déjà utilisé' });
+        }
+
+        // Le mail et le numéro de téléphone ne sont pas encore utilisés, procéder à l'inscription
+        await db.query('INSERT INTO users (Mail, LastName, FirstName, Birthday, PhoneNumber, Password) VALUES (?, ?, ?, ?, ?, ?)', [mail, lastName, firstName, birthday, phoneNumber, password]);
 
         res.status(201).json({ success: true, message: 'Inscription réussie' });
     } catch (error) {
@@ -33,3 +59,4 @@ exports.register_user = async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
+
