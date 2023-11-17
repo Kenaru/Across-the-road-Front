@@ -29,7 +29,7 @@ exports.forgotpassword = async (req, res) => {
         await db.query('UPDATE Users SET reset_token = ?, reset_token_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE mail = ?', [resetToken, mail]);
 
         // Construisez le lien de réinitialisation avec le token
-        const resetLink = `http://localhost:5000/reset-password?token=${resetToken}`;
+        const resetLink = `http://127.0.0.1:5500/frontend/Home/Connexion/reset-password/reset-password?token=${resetToken}`;
 
         // Envoyez l'e-mail de réinitialisation
         const transporter = nodemailer.createTransport({
