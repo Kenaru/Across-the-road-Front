@@ -21,9 +21,10 @@ img{
 
 }
 
-/* img {
-    padding-top: 20%; ;
-} */
+img {
+    margin-top: -45%;
+    margin-left: 65%;
+} 
 
 .left-panel {
     flex: 1;
@@ -37,9 +38,7 @@ img{
 
 .right-panel {
     flex: 1;
-    padding: 5%;
-    border-radius: 21px;
-    justify-content: center;
+    justify-content: left;
 }
 
 form {
