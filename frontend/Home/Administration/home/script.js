@@ -4,7 +4,7 @@ const resultElement = document.getElementById('result');
 
 // script.mjs
 document.addEventListener('DOMContentLoaded', () => {
-  const resultElement = document.getElementById('result');
+  const resultElement = document.getElementById('nbrAssoWebsite');
   fetch(`${apiURL}/api/get/countAssoWebsite`)
   .then(response => {
     if (!response.ok) {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return response.json();
   })
   .then(data => {
-    resultElement.textContent = `Nombre d'utilisateurs dans AssoWebsite : ${data.nbrAssoWebsite}`;
+    resultElement.textContent = `${data.nbrAssoWebsite}`;
   })
   .catch(error => {
     console.error('Erreur lors de la récupération des données :', error);
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return response.json();
   })
   .then(data => {
-    resultElement.textContent = `Nombre d'utilisateurs : ${data.nbrUser}`;
+    resultElement.textContent = `${data.nbrUser}`;
   })
   .catch(error => {
     console.error('Erreur lors de la récupération des données :', error);
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return response.json();
   })
   .then(data => {
-    resultElement.textContent = `Nombre d'association en ligne : ${data.AssoOnline}`;
+    resultElement.textContent = `${data.AssoOnline}`;
   })
   .catch(error => {
     console.error('Erreur lors de la récupération des données :', error);
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return response.json();
   })
   .then(data => {
-    resultElement.textContent = `Nombre de président : ${data.prezOnline}`;
+    resultElement.textContent = `${data.prezOnline}`;
   })
   .catch(error => {
     console.error('Erreur lors de la récupération des données :', error);
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return response.json();
   })
   .then(data => {
-    resultElement.textContent = `Nombre d'admin : ${data.AdminOnline}`;
+    resultElement.textContent = `${data.AdminOnline}`;
   })
   .catch(error => {
     console.error('Erreur lors de la récupération des données :', error);

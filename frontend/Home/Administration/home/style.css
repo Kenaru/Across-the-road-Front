@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100vh;
+    padding: 0 20px; /* Espacement pour les côtés */
+}
+
+.left, .right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bubble {
+    display: flex;
+    justify-content: center;
+    background-color: #089ED3;
+    align-items: center;
+    width: 80px; /* Largeur initiale */
+    height: 80px; /* Hauteur initiale */
+    border-radius: 50%; /* Rend la div ronde */
+    font-size: 20px; /* Taille de la police */
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+}
