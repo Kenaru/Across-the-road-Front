@@ -2,7 +2,7 @@ const db = require('../config/db'); // Importez votre module de connexion à la 
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
-exports.sendResetEmail = async (req, res) => {
+exports.forgotpassword = async (req, res) => {
     const { mail } = req.body;
 
     try {
@@ -20,9 +20,9 @@ exports.sendResetEmail = async (req, res) => {
         await db.query('UPDATE Users SET reset_token = ?, reset_token_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE mail = ?', [resetToken, mail]);
 
         const transporter = nodemailer.createTransport({
-            host: 'jojoba.o2switch.net',
-            port: 465,
-            secure: true, // true for 465, false for other ports
+            host: 'http://mail.acrosstheroad.fr',
+            port: 2079,
+            // secure: true, // true for 465, false for other ports
             auth: {
                 user: 'ne-pas-repondre@acrosstheroad.fr',
                 pass: '!_NPR_AcrossTheRoad_2023!Mail_!',

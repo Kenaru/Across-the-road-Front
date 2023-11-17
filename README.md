@@ -9,6 +9,7 @@ npm install mysql2@^3.6.3
 npm install axios@^1.6.1
 npm install cors@^2.8.5
 npm install nodemon@^3.0.1 --save-dev
+npm install nodemailer
 
 
 

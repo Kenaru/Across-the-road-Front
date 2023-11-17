@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Envoyez l'e-mail de réinitialisation au backend
-        fetch('http://localhost:5000/api/forgot-password', {
+        fetch('http://localhost:5000/api/post/forgot-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
