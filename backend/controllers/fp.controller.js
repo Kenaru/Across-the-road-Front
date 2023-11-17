@@ -1,39 +1,51 @@
-const db = require('../config/db'); // Importez votre module de connexion à la base de données
+const db = require('../config/db');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 exports.forgotpassword = async (req, res) => {
-    const { mail } = req.body;
+    const { mail, confirmmail } = req.body;
 
     try {
-        // Vérifiez si l'utilisateur existe dans la base de données
-        const user = await db.query('SELECT * FROM Users WHERE mail = ?', [mail]);
+        // Vérification des adresses e-mail et correspondance
+        if (!mail || !mail.trim()) {
+            return res.status(400).json({ success: false, message: 'Adresse e-mail invalide' });
+        }
 
-        if (!user || user.length === 0) {
+        if (mail !== confirmmail) {
+            return res.status(400).json({ success: false, message: 'Les adresses e-mail ne correspondent pas' });
+        }
+
+        // Vérification que l'adresse e-mail existe dans la base de données
+        const userExists = await checkUserExists(mail);
+
+        if (!userExists) {
             return res.status(404).json({ success: false, message: 'Utilisateur non trouvé' });
         }
 
-        // Générez un token de réinitialisation de mot de passe
+        // Génération du token de réinitialisation
         const resetToken = crypto.randomBytes(20).toString('hex');
 
-        // Stockez le token dans la base de données avec une expiration (par exemple, 1 heure)
+        // Stockage du token dans la base de données avec expiration (par exemple, 1 heure)
         await db.query('UPDATE Users SET reset_token = ?, reset_token_expires = DATE_ADD(NOW(), INTERVAL 1 HOUR) WHERE mail = ?', [resetToken, mail]);
-
-        const transporter = nodemailer.createTransport({
-            host: 'http://mail.acrosstheroad.fr',
-            port: 2079,
-            // secure: true, // true for 465, false for other ports
-            auth: {
-                user: 'ne-pas-repondre@acrosstheroad.fr',
-                pass: '!_NPR_AcrossTheRoad_2023!Mail_!',
-            },
-        });
-        
 
         // Construisez le lien de réinitialisation avec le token
         const resetLink = `http://localhost:5000/reset-password?token=${resetToken}`;
 
         // Envoyez l'e-mail de réinitialisation
+        const transporter = nodemailer.createTransport({
+            host: 'jojoba.o2switch.net', // Adresse du serveur SMTP (exemple pour Gmail)
+            port: 587, // Port du serveur SMTP (587 pour TLS, 465 pour SSL)
+            secure: false, // true pour 465, false pour d'autres ports
+            auth: {
+                user: 'ne-pas-repondre@acrosstheroad.fr', // Votre adresse e-mail
+                pass: '!_NPR_AcrossTheRoad_2023!Mail_!', // Votre mot de passe
+            },
+            tls: {
+                rejectUnauthorized: false, // Nécessaire si votre serveur SMTP utilise un certificat auto-signé
+            },
+        });
+
+
         await transporter.sendMail({
             from: 'ne-pas-repondre@acrosstheroad.fr',
             to: mail,
@@ -48,3 +60,10 @@ exports.forgotpassword = async (req, res) => {
         res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
     }
 };
+
+async function checkUserExists(mail) {
+    const result = await db.query('SELECT COUNT(*) AS count FROM Users WHERE mail = ?', [mail]);
+    return result[0][0].count > 0; // Accéder correctement à la valeur de count
+}
+
+
