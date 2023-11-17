@@ -11,10 +11,10 @@
 <body>
     <div class="container">
         <div class="left-panel">
-            <form id="login-form">
+            <form id="login-form" action="http://localhost:5000/api/post/forgot-password" method="post">
                 <h1>Mot de Passe Oublié</h1>
                 <input type="text" id="mail" placeholder="Adresse Mail" required>
-                <input type="text" id="birthday" placeholder="Date de Naissance" required>
+                <input type="date" id="birthday" placeholder="Date de Naissance" required>
                 <br>
                 <a href="../login/login.html" id="firstConnect">se connecter?</a>
                 <br>

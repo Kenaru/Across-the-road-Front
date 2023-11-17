@@ -25,7 +25,7 @@ exports.register_user = async (req, res) => {
 
     try {
         // Procéder à l'inscription sans vérifications temporaires
-        await db.query('INSERT INTO Users SET ?', { mail, lastname, firstname, birthday, phonenumber, password });
+        await db.query('INSERT INTO Users SET ?', { mail, lastname, firstname, birthday, phonenumber, password, reset_token: null, reset_token_expires: null });
 
         res.status(201).json({ success: true, message: 'Inscription réussie', targetDiv: 'respons' });
     } catch (error) {
