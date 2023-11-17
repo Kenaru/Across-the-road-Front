@@ -276,9 +276,11 @@ exports.reset_password = async (req, res) => {
         }
 
         // Réinitialisation du mot de passe et suppression du token
-        await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [password, user.id]);
+await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [password, user.id]);
 
-        res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès' });
+// Redirection vers la page de connexion après une réinitialisation réussie
+res.redirect('../login/login.html');
+
     } catch (error) {
         console.error('Error resetting password:', error);
         res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
