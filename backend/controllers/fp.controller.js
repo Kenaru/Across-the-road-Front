@@ -66,4 +66,33 @@ async function checkUserExists(mail) {
     return result[0][0].count > 0; // Accéder correctement à la valeur de count
 }
 
+exports.reset_password = async (req, res) => {
+    const { token, password, confirmPassword } = req.body;
+
+    try {
+        // Vérification des mots de passe et correspondance
+        if (!password || !password.trim()) {
+            return res.status(400).json({ success: false, message: 'Mot de passe invalide' });
+        }
+
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+        }
+
+        // Vérification du token de réinitialisation
+        const user = await checkResetToken(token);
+
+        if (!user) {
+            return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
+        }
+
+        // Réinitialisation du mot de passe et suppression du token
+        await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [password, user.id]);
+
+        res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès' });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
+    }
+};
 

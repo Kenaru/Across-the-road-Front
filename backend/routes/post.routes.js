@@ -9,6 +9,7 @@
     router.post('/login', postController.login_user);
     router.post('/register', postController.register_user);
     router.post('/forgot-password', fpController.forgotpassword);
+    router.post('/reset-password', fpController.reset_password);
 
     // Ajoutez d'autres routes selon vos besoins...
 
