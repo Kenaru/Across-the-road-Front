@@ -6,13 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
     registerForm.addEventListener('submit', function (event) {
         event.preventDefault();
 
-        const lastName = document.getElementById('lastName').value;
-        const firstName = document.getElementById('firstName').value;
+        const lastname = document.getElementById('lastname').value;
+        const firstname = document.getElementById('firstname').value;
         const birthday = document.getElementById('birthday').value;
         const mail = document.getElementById('mail').value;
-        const phoneNumber = document.getElementById('phoneNumber').value;
+        const phonenumber = document.getElementById('phonenumber').value;
         const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+        const confirmPassword = document.getElementById('confirmpassword').value;
 
         // Vérification que les mots de passe correspondent
         if (password !== confirmPassword) {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ lastName, firstName, birthday, mail, phoneNumber, password }),
+            body: JSON.stringify({ mail, lastname, firstname, birthday, phonenumber, password }),
         })
         .then(response => response.json())
         .then(data => {
