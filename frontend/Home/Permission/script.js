@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const isLoggedIn = sessionStorage.getItem('isLoggedIn');
         if (!isLoggedIn) {
             // Rediriger vers la page de login si la session n'est pas présente
-            window.location.href = '/frontend/home/connexion/login.html';
+            window.location.href = '../frontend/home/connexion/login.html';
             return; // Ajoutez cette ligne pour arrêter l'exécution du script ici
         }
 

@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <div class="left-panel">
-            <form id="login-form" action="/register" method="post">
+            <form id="register-form" action="http://localhost:5000/api/post/register" method="post">
                 <h1>Register</h1>
                 <input type="text" id="Mail" placeholder="Adresse Mail" required>
                 <input type="text" id="LastName" placeholder="Nom" required>
@@ -25,6 +25,7 @@
                 <br>
                 <a href="../login/login.html" id="firstConnect">Se connecter</a>
                 <br>
+                <div id="respons"></div>
                 <button type="submit">Se connecter</button>
                 <br>
             </form>

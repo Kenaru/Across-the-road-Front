@@ -29,17 +29,17 @@ exports.register_user = async (req, res) => {
 
         if (existingUsers.length > 0) {
             // Le mail est déjà enregistré
-            return res.status(400).json({ success: false, message: 'Mail déjà enregistré' });
+            return res.status(400).json({ success: false, message: 'Mail déjà enregistré', targetDiv: 'respons' });
         }
 
         // Vérifier que les mots de passe correspondent
         if (password !== confirmPassword) {
-            return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+            return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas', targetDiv: 'respons' });
         }
 
         // Vérifier que le mot de passe fait au moins 12 caractères
         if (password.length < 12) {
-            return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 12 caractères' });
+            return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 12 caractères', targetDiv: 'respons' });
         }
 
         // Vérifier si le numéro de téléphone est déjà utilisé
@@ -47,16 +47,16 @@ exports.register_user = async (req, res) => {
 
         if (existingPhoneNumbers.length > 0) {
             // Le numéro de téléphone est déjà utilisé
-            return res.status(400).json({ success: false, message: 'Numéro de téléphone déjà utilisé' });
+            return res.status(400).json({ success: false, message: 'Numéro de téléphone déjà utilisé', targetDiv: 'respons' });
         }
 
         // Le mail et le numéro de téléphone ne sont pas encore utilisés, procéder à l'inscription
         await db.query('INSERT INTO users (Mail, LastName, FirstName, Birthday, PhoneNumber, Password) VALUES (?, ?, ?, ?, ?, ?)', [mail, lastName, firstName, birthday, phoneNumber, password]);
 
-        res.status(201).json({ success: true, message: 'Inscription réussie' });
+        res.status(201).json({ success: true, message: 'Inscription réussie', targetDiv: 'respons' });
     } catch (error) {
         console.error('Error executing MySQL query:', error);
-        res.status(500).json({ success: false, message: 'Internal Server Error' });
+        res.status(500).json({ success: false, message: 'Internal Server Error', targetDiv: 'respons' });
     }
 };
 
