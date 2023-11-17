@@ -21,11 +21,11 @@ exports.login_user = async (req, res) => {
 };
 
 exports.register_user = async (req, res) => {
-    const { mail, lastName, firstName, birthday, phoneNumber, password, confirmPassword } = req.body;
+    const { Mail, lastName, firstName, birthday, phoneNumber, password, confirmPassword } = req.body;
 
     try {
         // Vérifier si le mail est déjà utilisé
-        const [existingUsers] = await db.query('SELECT * FROM users WHERE Mail = ?', [mail]);
+        const [existingUsers] = await db.query('SELECT * FROM users WHERE Mail = ?', [Mail]);
 
         if (existingUsers.length > 0) {
             // Le mail est déjà enregistré
