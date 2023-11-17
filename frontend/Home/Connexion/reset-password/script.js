@@ -1,17 +1,12 @@
-const db = require('../config/db');
-
 document.addEventListener('DOMContentLoaded', function () {
     const resetPasswordForm = document.getElementById('reset-password-form');
     const responseDiv = document.getElementById('response');
+    const urlParams = new URLSearchParams(window.location.search);
 
     resetPasswordForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Empêche l'envoi du formulaire par défaut
 
-
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', `Bearer ${token}`); // Ajoutez le token dans l'en-tête
-        // Récupérer les valeurs des champs
-        const token = headers; // Assurez-vous de récupérer correctement le token
+        const token = urlParams.get('token'); // Récupérer le token depuis l'URL
         const password = document.getElementById('password').value.trim();
         const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
@@ -27,41 +22,51 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Envoyer les données au serveur
-        sendResetPasswordRequest({ token, password, confirmPassword });
+        sendResetPasswordRequest({ token, password });
     });
 
-   // Fonction de validation de mot de passe simple
-function isValidPassword(password) {
-    // Le mot de passe doit contenir au moins 8 caractères
-    // et au moins une lettre majuscule, une lettre minuscule et un chiffre
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
+    // Fonction de validation de mot de passe simple
+    function isValidPassword(password) {
+        // Le mot de passe doit contenir au moins 8 caractères
+        // et au moins une lettre majuscule, une lettre minuscule et un chiffre
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
 
-    return passwordRegex.test(password);
-}
-
+        return passwordRegex.test(password);
+    }
 
     // Fonction pour envoyer la requête au serveur
     function sendResetPasswordRequest(data) {
         const headers = new Headers();
         headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', `Bearer ${data.token}`); // Ajoutez le token dans l'en-tête
-
+        headers.append('Authorization', `Bearer ${data.token}`); // Ajouter le token dans l'en-tête
+    
+        const requestBody = {
+            token: data.token,
+            password: data.password,
+            confirmPassword: data.password // Utiliser le même champ pour le mot de passe confirmé
+        };
+    
         fetch('http://localhost:5000/api/post/reset-password', {
             method: 'POST',
             headers: headers,
-            body: JSON.stringify(data),
+            body: JSON.stringify(requestBody), // Utiliser requestBody au lieu de data
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur de réseau - Impossible de joindre le serveur.');
+            }
+            return response.json();
+        })
         .then(result => {
             if (result.success) {
                 responseDiv.innerHTML = '<p>Mot de passe réinitialisé avec succès</p>';
             } else {
-                responseDiv.innerHTML = '<p>Erreur: ' + result.message + '</p>';
+                responseDiv.innerHTML = `<p>Erreur: ${result.message}</p>`;
             }
         })
         .catch(error => {
             console.error('Erreur lors de l\'envoi de la requête:', error);
             responseDiv.innerHTML = '<p>Erreur interne du serveur</p>';
         });
-    }
+    }    
 });

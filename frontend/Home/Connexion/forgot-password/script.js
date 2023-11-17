@@ -1,7 +1,3 @@
-const db = require('../config/db');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-
 document.addEventListener('DOMContentLoaded', function () {
     const forgotPasswordForm = document.getElementById('forgot-password-form');
     const responsMailDiv = document.getElementById('responsmail');
