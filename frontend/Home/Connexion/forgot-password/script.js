@@ -1,59 +1,60 @@
-const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
+const db = require('../config/db');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 document.addEventListener('DOMContentLoaded', function () {
     const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const responsMailDiv = document.getElementById('responsmail');
 
     forgotPasswordForm.addEventListener('submit', function (event) {
-        event.preventDefault();
+        event.preventDefault(); // Empêche l'envoi du formulaire par défaut
 
-        // Récupérez les valeurs des champs
-        const mail = document.getElementById('mail').value;
-        const birthday = document.getElementById('birthday').value;
+        // Récupérer les valeurs des champs
+        const mail = document.getElementById('mail').value.trim();
+        const confirmmail = document.getElementById('confirmmail').value.trim();
 
-        // Vérifiez le format de l'e-mail
+        // Effectuer une validation côté client
         if (!isValidEmail(mail)) {
-            alert('Veuillez entrer une adresse e-mail valide.');
+            responsMailDiv.innerText = 'Adresse e-mail invalide';
             return;
         }
 
-        // Vérifiez si l'e-mail correspond à la date de naissance
-        if (!isValidBirthday(mail, birthday)) {
-            alert('L\'e-mail ne correspond pas à la date de naissance.');
+        if (mail !== confirmmail) {
+            responsMailDiv.innerText = 'Les adresses e-mail ne correspondent pas';
             return;
         }
 
-        // Envoyez l'e-mail de réinitialisation au backend
-        fetch('http://localhost:5000/api/post/forgot-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ mail, birthday }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('E-mail de réinitialisation envoyé avec succès!');
-            } else {
-                alert(`Erreur: ${data.message}`);
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de la requête au serveur:', error);
-            alert('Une erreur s\'est produite. Veuillez réessayer plus tard.');
-        });
+        // Envoyer les données au serveur
+        sendForgotPasswordRequest({ mail, confirmmail });
     });
 
-    // Fonction pour vérifier le format de l'e-mail
+    // Fonction de validation d'e-mail simple
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // Fonction pour vérifier si l'e-mail correspond à la date de naissance
-    function isValidBirthday(mail, birthday) {
-        // Ajoutez votre logique de validation ici
-        // Par exemple, vous pouvez comparer les deux valeurs et retourner vrai ou faux en conséquence
-        return mail === birthday;
+    // Fonction pour envoyer la requête au serveur
+    function sendForgotPasswordRequest(data) {
+        fetch('http://localhost:5000/api/post/forgot-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                responsMailDiv.innerText = 'E-mail de réinitialisation envoyé avec succès';
+            } else {
+                responsMailDiv.innerText = 'Erreur: ' + result.message;
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi de la requête:', error);
+            responsMailDiv.innerText = 'Erreur interne du serveur';
+        });
     }
 });
+
