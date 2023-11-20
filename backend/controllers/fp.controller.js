@@ -261,21 +261,6 @@ exports.reset_password = async (req, res) => {
   const { token, password, confirmPassword } = req.body;
 
   try {
-    // Vérification des mots de passe et correspondance
-    console.log('Données d\'entrée :', { token, password, confirmPassword });
-
-    if (!password || !password.trim()) {
-      return res.status(400).json({ success: false, message: 'Mot de passe invalide' });
-    }
-
-    if (password !== confirmPassword) {
-      return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
-    }
-
-// Recherche de l'utilisateur via le token
-console.log('Token de réinitialisation reçu :', token);
-const now = new Date();
-console.log('Date actuelle :', now);
 
 const user = await db.query('SELECT * FROM Users WHERE reset_token = ? AND reset_token_expires > ?', [token, now]);
 
@@ -287,12 +272,9 @@ console.log('Informations utilisateur :', user);
     }
 
     // Réinitialisation du mot de passe
-console.log('ID de l\'utilisateur :', user[0].id); // Ajout de cette ligne pour vérifier l'ID de l'utilisateur
-
 const updateResult = await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ? AND reset_token = ?', [password, user[0].id, token]);
 
 // Vérification du résultat de la mise à jour
-console.log('Résultat de la mise à jour :', updateResult);
 
 if (updateResult.affectedRows === 1) {
   res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });

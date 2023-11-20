@@ -24,12 +24,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const hashedPassword = await hashPassword(password);
 
         // Envoie des données au serveur pour l'inscription
+        const dataToSend = {
+            mail,
+            lastname,
+            firstname,
+            birthday,
+            phonenumber,
+            password: hashedPassword,
+            permission: 'user',
+        };
+
         fetch(`${apiURL}/api/post/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ mail, lastname, firstname, birthday, phonenumber, password: hashedPassword, permission: user }),
+            body: JSON.stringify(dataToSend),
         })
         .then(response => response.json())
         .then(data => {
@@ -58,3 +68,4 @@ document.addEventListener('DOMContentLoaded', function () {
         return hashedPassword;
     }
 });
+
