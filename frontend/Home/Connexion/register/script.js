@@ -3,7 +3,7 @@ const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
 document.addEventListener('DOMContentLoaded', function () {
     const registerForm = document.getElementById('register-form');
 
-    registerForm.addEventListener('submit', function (event) {
+    registerForm.addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const lastname = document.getElementById('lastname').value;
@@ -20,13 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
+        // Hacher le mot de passe côté client avec SHA-256
+        const hashedPassword = await hashPassword(password);
+
         // Envoie des données au serveur pour l'inscription
         fetch(`${apiURL}/api/post/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ mail, lastname, firstname, birthday, phonenumber, password }),
+            body: JSON.stringify({ mail, lastname, firstname, birthday, phonenumber, password: hashedPassword, permission: user }),
         })
         .then(response => response.json())
         .then(data => {
@@ -44,4 +47,14 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Une erreur s\'est produite. Veuillez réessayer plus tard.');
         });
     });
+
+    // Fonction pour hacher le mot de passe avec SHA-256
+    async function hashPassword(password) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+        return hashedPassword;
+    }
 });
