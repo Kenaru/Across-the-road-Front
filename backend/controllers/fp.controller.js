@@ -261,29 +261,23 @@ exports.reset_password = async (req, res) => {
   const { token, password, confirmPassword } = req.body;
 
   try {
-
-const user = await db.query('SELECT * FROM Users WHERE reset_token = ? AND reset_token_expires > ?', [token, now]);
-
-// Vérification du résultat de la recherche
-console.log('Informations utilisateur :', user);
-
-    if (!user || user.length === 0) {
-      return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
+    // Vérification des mots de passe et correspondance
+    if (!password || !password.trim()) {
+      return res.status(400).json({ success: false, message: 'Mot de passe invalide' });
     }
+    if (password !== confirmPassword) {
+      return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+    }
+     // Recherche de l'utilisateur via le token
+     const user = await db.query('SELECT * FROM Users WHERE reset_token = ?', [token]);
+     if (!user || user.length === 0 || user[0].reset_token_expires < new Date()) {
+       return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
+     }
+     await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [password, user[0][0].id]);
+     res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });
+   } catch (error) {
+     console.error('Error resetting password:', error);
+     res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
+   }
+ };
 
-    // Réinitialisation du mot de passe
-const updateResult = await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ? AND reset_token = ?', [password, user[0].id, token]);
-
-// Vérification du résultat de la mise à jour
-
-if (updateResult.affectedRows === 1) {
-  res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });
-} else {
-  console.error('La mise à jour du mot de passe n\'affecte aucune ligne dans la base de données.');
-  res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
-}
-  } catch (error) {
-    console.error('Erreur lors de la réinitialisation du mot de passe :', error);
-    res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
-  }
-};

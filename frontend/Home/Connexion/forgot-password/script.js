@@ -1,3 +1,5 @@
+const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
+
 document.addEventListener('DOMContentLoaded', function () {
     const forgotPasswordForm = document.getElementById('forgot-password-form');
     const responsMailDiv = document.getElementById('responsmail');
@@ -21,36 +23,43 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Envoyer les données au serveur
-        sendForgotPasswordRequest({ mail, confirmmail });
+        sendForgotPasswordRequest({ mail, confirmmail })
+            .then(result => {
+                responsMailDiv.innerText = result.message;
+            })
+            .catch(error => {
+                console.error('Erreur lors de l\'envoi de la requête:', error);
+                responsMailDiv.innerText = 'Erreur interne du serveur';
+            });
     });
 
-    // Fonction de validation d'e-mail simple
+    // Fonction de validation d'e-mail robuste
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
 
-    // Fonction pour envoyer la requête au serveur
+    // Fonction pour envoyer la requête au serveur avec des promesses
     function sendForgotPasswordRequest(data) {
-        fetch('http://localhost:5000/api/post/forgot-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                responsMailDiv.innerText = 'E-mail de réinitialisation envoyé avec succès';
-            } else {
-                responsMailDiv.innerText = 'Erreur: ' + result.message;
-            }
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'envoi de la requête:', error);
-            responsMailDiv.innerText = 'Erreur interne du serveur';
+        return new Promise((resolve, reject) => {
+            fetch('http://localhost:5000/api/post/forgot-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    resolve(result);
+                } else {
+                    reject(result);
+                }
+            })
+            .catch(error => {
+                reject(error);
+            });
         });
     }
 });
-
