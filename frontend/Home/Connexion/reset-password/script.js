@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmPassword: data.password // Utiliser le même champ pour le mot de passe confirmé
         };
     
-        fetch('http://localhost:5000/api/post/reset-password', {
+        fetch(`${apiURL}/api/post/reset-password`, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(requestBody), // Utiliser requestBody au lieu de data

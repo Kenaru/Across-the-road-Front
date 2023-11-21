@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Fonction pour envoyer la requête au serveur avec des promesses
     function sendForgotPasswordRequest(data) {
         return new Promise((resolve, reject) => {
-            fetch('http://localhost:5000/api/post/forgot-password', {
+            fetch(`${apiURL}/api/post/forgot-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
