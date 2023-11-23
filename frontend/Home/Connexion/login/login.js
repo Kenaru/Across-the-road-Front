@@ -23,5 +23,3 @@ app.get('/api/get/disconnectedUsers', (req, res) => {
         return res.json({ success: true, disconnectedUsers: users });
     });
 });
-
-document.getElementById('login-status').innerText = 'Connecté';
