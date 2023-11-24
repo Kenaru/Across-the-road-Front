@@ -1,4 +1,4 @@
-const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur
+const apiURL = 'http://localhost:5000'; // Remplacez par l'URL de votre serveur 
 
 document.addEventListener('DOMContentLoaded', function () {
     const resetPasswordForm = document.getElementById('reset-password-form');
