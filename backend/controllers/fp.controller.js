@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const bcrypt = require('bcrypt');
 
 exports.forgotpassword = async (req, res) => {
   const db = require('../config/db');
@@ -260,24 +261,30 @@ exports.reset_password = async (req, res) => {
   const db = require('../config/db');
   const { token, password, confirmPassword } = req.body;
 
+  // Regex pour vérifier le mot de passe
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
+
   try {
-    // Vérification des mots de passe et correspondance
-    if (!password || !password.trim()) {
-      return res.status(400).json({ success: false, message: 'Mot de passe invalide' });
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 8 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.' });
     }
     if (password !== confirmPassword) {
       return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
     }
-     // Recherche de l'utilisateur via le token
-     const user = await db.query('SELECT * FROM Users WHERE reset_token = ?', [token]);
-     if (!user || user.length === 0 || user[0].reset_token_expires < new Date()) {
-       return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
-     }
-     await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [password, user[0][0].id]);
-     res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });
-   } catch (error) {
-     console.error('Error resetting password:', error);
-     res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
-   }
- };
 
+    const user = await db.query('SELECT * FROM Users WHERE reset_token = ?', [token]);
+
+    if (!user || user.length === 0 || user[0].reset_token_expires < new Date()) {
+      return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [hashedPassword, user[0][0].id]);
+
+    res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
+  }
+};

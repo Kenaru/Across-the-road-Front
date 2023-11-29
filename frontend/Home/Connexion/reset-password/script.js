@@ -23,11 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        // Hacher le mot de passe côté client avec SHA-256
-        const hashedPassword = await hashPassword(password);
-
         // Envoyer les données au serveur
-        sendResetPasswordRequest({ token, password: hashedPassword });
+        sendResetPasswordRequest({ token, password });
     });
 
     // Fonction de validation de mot de passe simple
@@ -37,16 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
 
         return passwordRegex.test(password);
-    }
-
-    // Fonction pour hacher le mot de passe avec SHA-256
-    async function hashPassword(password) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-        return hashedPassword;
     }
 
     // Fonction pour envoyer la requête au serveur

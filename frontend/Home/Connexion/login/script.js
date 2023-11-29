@@ -10,16 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const mail = document.getElementById('mail').value;
         const password = document.getElementById('password').value;
 
-        // Hacher le mot de passe côté client avec SHA-256
-        const hashedPassword = await hashPassword(password);
-
-        // Envoie les données au serveur
+        // Envoie les données au serveur sans hacher le mot de passe
         fetch(`${apiURL}/api/post/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ mail, password: hashedPassword }),
+            body: JSON.stringify({ mail, password }),
         })
         .then(response => response.json())
         .then(data => {
@@ -37,14 +34,4 @@ document.addEventListener('DOMContentLoaded', function () {
             responseDiv.innerHTML = '<p>Une erreur s\'est produite. Veuillez réessayer plus tard.</p>';
         });
     });
-
-    // Fonction pour hacher le mot de passe avec SHA-256
-    async function hashPassword(password) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(password);
-        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hashedPassword = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-        return hashedPassword;
-    }
 });

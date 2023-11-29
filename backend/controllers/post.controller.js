@@ -1,35 +1,63 @@
 const db = require('../config/db');
+const bcrypt = require('bcrypt');
+
 
 exports.login_user = async (req, res) => {
     const { mail, password } = req.body;
-    
+
     try {
         // Utilisation du pool pour exécuter les requêtes
-        const [rows] = await db.query('SELECT * FROM Users WHERE mail = ? AND password = ?', [mail, password]);
+        const [rows] = await db.query('SELECT * FROM Users WHERE mail = ?', [mail]);
         if (rows.length > 0) {
-            // L'utilisateur existe, les détails sont corrects
-            await db.query('UPDATE Users SET is_logged_in = 1 WHERE mail = ?', [mail]);
-            const loginTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
-            await db.query('INSERT INTO sessions (user_id, login_time, logout_time) VALUES (?, ?, DATE_ADD(?, INTERVAL 12 HOUR))', [rows[0].id, loginTime, loginTime]);
-    
-            res.status(200).json({ success: true, message: 'Login successful' });
+            const user = rows[0];
+            // Comparaison des mots de passe hachés
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            if (passwordMatch) {
+                // L'utilisateur existe, les détails sont corrects
+                await db.query('UPDATE Users SET is_logged_in = 1 WHERE mail = ?', [mail]);
+                const loginTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+                await db.query('INSERT INTO sessions (user_id, login_time, logout_time) VALUES (?, ?, DATE_ADD(?, INTERVAL 12 HOUR))', [user.id, loginTime, loginTime]);
+
+                res.status(200).json({ success: true, message: 'Login successful' });
+            } else {
+                // Mauvais mot de passe
+                res.status(401).json({ success: false, message: 'Invalid username or password' });
+            }
         } else {
-            // Aucun utilisateur trouvé avec les détails fournis
+            // Aucun utilisateur trouvé avec l'email fourni
             res.status(401).json({ success: false, message: 'Invalid username or password' });
         }
-
     } catch (error) {
         console.error('Error executing MySQL query:', error);
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
 
+
 exports.register_user = async (req, res) => {
     const { mail, lastname, firstname, birthday, phonenumber, password, confirmPassword } = req.body;
 
+    // Regex pour vérifier le mot de passe
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
+
     try {
-        // Procéder à l'inscription sans vérifications temporaires
-        await db.query('INSERT INTO Users SET ?', { mail, lastname, firstname, birthday, phonenumber, password, reset_token: null, reset_token_expires: null });
+        if (!passwordRegex.test(password)) {
+            // Le mot de passe ne correspond pas aux critères requis
+            console.log(password);
+            console.log(passwordRegex.test(password));
+            return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 8 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.' });
+        }
+
+        if (password !== confirmPassword) {
+            // Les mots de passe ne correspondent pas
+            return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas.' });
+        }
+
+        // Hacher le mot de passe avec bcrypt
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Procéder à l'inscription avec le mot de passe haché
+        await db.query('INSERT INTO Users SET ?', { mail, lastname, firstname, birthday, phonenumber, password: hashedPassword, reset_token: null, reset_token_expires: null });
 
         res.status(201).json({ success: true, message: 'Inscription réussie', targetDiv: 'respons' });
     } catch (error) {
@@ -37,6 +65,7 @@ exports.register_user = async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', targetDiv: 'respons' });
     }
 };
+
 
 exports.logout_user = async (req, res) => {
     const userId = req.body.userId; // Assurez-vous de recevoir l'ID de l'utilisateur depuis la requête
