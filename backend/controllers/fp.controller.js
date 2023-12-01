@@ -1,6 +1,5 @@
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt');
 
 exports.forgotpassword = async (req, res) => {
   const db = require('../config/db');
@@ -257,34 +256,44 @@ async function checkUserExists(mail) {
     return result[0][0].count > 0; // Accéder correctement à la valeur de count
 }
 
+const db = require('../config/db');
+
 exports.reset_password = async (req, res) => {
-  const db = require('../config/db');
-  const { token, password, confirmPassword } = req.body;
+    const { token, password, confirmPassword } = req.body;
 
-  // Regex pour vérifier le mot de passe
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
+    // Regex pour vérifier le mot de passe
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
 
-  try {
-    if (!passwordRegex.test(password)) {
-      return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 8 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.' });
+    try {
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ success: false, message: 'Le mot de passe doit faire au moins 8 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.' });
+        }
+        if (password !== confirmPassword) {
+            return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
+        }
+
+        const user = await db.query('SELECT * FROM Users WHERE reset_token = ?', [token]);
+
+        if (!user || user.length === 0 || user[0].reset_token_expires < new Date()) {
+            return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
+        }
+
+        // Hacher le mot de passe avec SHA-256
+        const hashedPassword = hashPassword(password);
+
+        await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [hashedPassword, user[0][0].id]);
+
+        res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
     }
-    if (password !== confirmPassword) {
-      return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas' });
-    }
-
-    const user = await db.query('SELECT * FROM Users WHERE reset_token = ?', [token]);
-
-    if (!user || user.length === 0 || user[0].reset_token_expires < new Date()) {
-      return res.status(401).json({ success: false, message: 'Token invalide ou expiré' });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    await db.query('UPDATE Users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?', [hashedPassword, user[0][0].id]);
-
-    res.status(200).json({ success: true, message: 'Mot de passe réinitialisé avec succès. Vous pouvez maintenant vous connecter.' });
-  } catch (error) {
-    console.error('Error resetting password:', error);
-    res.status(500).json({ success: false, message: 'Erreur interne du serveur' });
-  }
 };
+
+// Fonction pour hacher le mot de passe avec SHA-256
+function hashPassword(password) {
+    const hash = crypto.createHash('sha256');
+    hash.update(password);
+    return hash.digest('hex');
+}
+

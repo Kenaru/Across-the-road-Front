@@ -1,6 +1,5 @@
 const db = require('../config/db');
-const bcrypt = require('bcrypt');
-
+const crypto = require('crypto');
 
 exports.login_user = async (req, res) => {
     const { mail, password } = req.body;
@@ -11,8 +10,8 @@ exports.login_user = async (req, res) => {
         if (rows.length > 0) {
             const user = rows[0];
             // Comparaison des mots de passe hachés
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if (passwordMatch) {
+            const hashedPassword = hashPassword(password); // Hashage du mot de passe entré
+            if (hashedPassword === user.password) {
                 // L'utilisateur existe, les détails sont corrects
                 await db.query('UPDATE Users SET is_logged_in = 1 WHERE mail = ?', [mail]);
                 const loginTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -33,7 +32,6 @@ exports.login_user = async (req, res) => {
     }
 };
 
-
 exports.register_user = async (req, res) => {
     const { mail, lastname, firstname, birthday, phonenumber, password, confirmPassword } = req.body;
 
@@ -53,9 +51,9 @@ exports.register_user = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Les mots de passe ne correspondent pas.' });
         }
 
-        // Hacher le mot de passe avec bcrypt
-        const hashedPassword = await bcrypt.hash(password, 10);
-
+        // Hacher le mot de passe avec SHA-256
+        const hashedPassword = hashPassword(password);
+        
         // Procéder à l'inscription avec le mot de passe haché
         await db.query('INSERT INTO Users SET ?', { mail, lastname, firstname, birthday, phonenumber, password: hashedPassword, reset_token: null, reset_token_expires: null });
 
@@ -65,7 +63,6 @@ exports.register_user = async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal Server Error', targetDiv: 'respons' });
     }
 };
-
 
 exports.logout_user = async (req, res) => {
     const userId = req.body.userId; // Assurez-vous de recevoir l'ID de l'utilisateur depuis la requête
@@ -83,3 +80,11 @@ exports.logout_user = async (req, res) => {
         res.status(500).json({ success: false, message: 'Erreur du serveur lors de la déconnexion' });
     }
 };
+
+// Fonction pour hacher le mot de passe avec SHA-256
+function hashPassword(password) {
+    const hash = crypto.createHash('sha256');
+    hash.update(password);
+    return hash.digest('hex');
+}
+
