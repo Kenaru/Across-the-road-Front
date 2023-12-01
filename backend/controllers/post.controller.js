@@ -87,3 +87,4 @@ function hashPassword(password) {
     hash.update(password);
     return hash.digest('hex');
 }
+
