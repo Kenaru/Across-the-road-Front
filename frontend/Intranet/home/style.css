@@ -1,8 +1,16 @@
+body{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background: url('../../img/arc_en_ciel_avec_fond_svg.svg') no-repeat left center fixed;
+    background-size: contain;
+    height: 100%;
+    width: 99%;
+}
+
 .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     padding: 0 20px; /* Espacement pour les côtés */
 }
 
@@ -10,17 +18,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
 }
 
 .bubble {
     display: flex;
     justify-content: center;
-    background-color: #089ED3;
     align-items: center;
-    width: 80px; /* Largeur initiale */
-    height: 80px; /* Hauteur initiale */
+    width: 100px; /* Largeur initiale */
+    height: 100px; /* Hauteur initiale */
     border-radius: 50%; /* Rend la div ronde */
-    font-size: 20px; /* Taille de la police */
+    font-size: 30px; /* Taille de la police */
     color: white;
     font-weight: bold;
     margin: 10px;
