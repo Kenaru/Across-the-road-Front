@@ -88,3 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error('Erreur lors de la récupération des données :', error);
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const bubbles = document.querySelectorAll('.bubble');  // Select all elements with class 'bubble'
+  const colors = ['#d31416', '#f28a29', '#fedc0f', '#a1c264', '#089ed3', '#694a98'];
+
+  bubbles.forEach(function (bubble) {
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      bubble.style.backgroundColor = randomColor;
+  });
+});
