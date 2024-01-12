@@ -3,37 +3,6 @@
     padding: 0 ;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-
-body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .arc-en-ciel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 50vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .bande {
-    flex: 1;
-    width: 100%;
-  }
-  
-  .rouge { background-color: #D31416; }
-  .orange { background-color: #F28A29; }
-  .jaune { background-color: #FEDC0F; }
-  .verte { background-color: #A1C264; }
-  .bleue { background-color: #089ED3; }
-  .violet { background-color: #694A98; }
-  
   
 img{
     width: 75%;
