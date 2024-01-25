@@ -1,17 +1,35 @@
 const db = require('../config/db');
 const crypto = require('crypto');
+const sendLogToDiscord = require('../utils/logtodiscord');
+
+
 
 exports.login_user = async (req, res) => {
     const { mail, password } = req.body;
 
     try {
-        // Utilisation du pool pour exécuter les requêtes
         const [rows] = await db.query('SELECT * FROM Users WHERE mail = ?', [mail]);
         if (rows.length > 0) {
             const user = rows[0];
-            // Comparaison des mots de passe hachés
-            const hashedPassword = hashPassword(password); // Hashage du mot de passe entré
+            const hashedPassword = hashPassword(password);
             if (hashedPassword === user.password) {
+                // Logique de connexion réussie
+                let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                if (ip) {
+                    // Extrait la première adresse IP en cas de plusieurs adresses
+                    ip = ip.split(',')[0];
+                    // Conversion d'une adresse IPv6 mappée en IPv4 (si applicable)
+                    if (ip.startsWith('::ffff:')) {
+                        ip = ip.substring(7);
+                    }
+                }
+
+                sendLogToDiscord('Connexion Utilisateur', {
+                    Mail: mail,
+                    'Nom / Prénom': `${user.lastname} ${user.firstname}`,
+                    IP: ip || 'IP non disponible', // Utiliser 'IP non disponible' si l'IP n'est pas détectée
+                    Host: req.hostname
+                });
                 // L'utilisateur existe, les détails sont corrects
                 await db.query('UPDATE Users SET is_logged_in = 1 WHERE mail = ?', [mail]);
                 const loginTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
@@ -32,6 +50,7 @@ exports.login_user = async (req, res) => {
     }
 };
 
+
 exports.register_user = async (req, res) => {
     const { mail, lastname, firstname, birthday, phonenumber, password, confirmPassword } = req.body;
 
@@ -39,6 +58,13 @@ exports.register_user = async (req, res) => {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#°.£¤µ,?\\§;!ù%²$=%^~'\-`\/\[\]&*()_+{}|:<>?]).{8,}$/;
 
     try {
+        // Enregistrement réussi
+        sendLogToDiscord('Création Compte Utilisateur', {
+            Mail: mail,
+            'Nom / Prénom': `${lastname} ${firstname}`,
+            IP: req.ip,
+            Host: req.hostname
+        });
         if (!passwordRegex.test(password)) {
             // Le mot de passe ne correspond pas aux critères requis
             console.log(password);
@@ -65,21 +91,27 @@ exports.register_user = async (req, res) => {
 };
 
 exports.logout_user = async (req, res) => {
-    const userId = req.body.userId; // Assurez-vous de recevoir l'ID de l'utilisateur depuis la requête
-    console.log(userId);
+    const { mail } = req.body; // Vous devrez transmettre l'email de l'utilisateur lors de la déconnexion
+
     try {
-        // Mettre à jour la valeur is_logged_in dans la table Users pour marquer l'utilisateur comme déconnecté
-        await db.query('UPDATE Users SET is_logged_in = 0 WHERE id = ?', [userId]);
+        // Logique de déconnexion
+        sendLogToDiscord('Déconnexion Utilisateur', {
+            Mail: mail,
+            IP: req.ip,
+            Host: req.hostname
+        });
+        // Mettez à jour la base de données pour indiquer que l'utilisateur s'est déconnecté
+        await db.query('UPDATE Users SET is_logged_in = 0 WHERE mail = ?', [mail]);
+        const logoutTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        await db.query('UPDATE sessions SET logout_time = ? WHERE user_id = (SELECT id FROM Users WHERE mail = ?) ORDER BY login_time DESC LIMIT 1', [logoutTime, mail]);
 
-        // Supprimer toutes les lignes de la table sessions correspondant à l'ID de l'utilisateur
-        await db.query('DELETE FROM sessions WHERE user_id = ?', [userId]);
-
-        res.status(200).json({ success: true, message: 'Utilisateur déconnecté avec succès' });
+        res.status(200).json({ success: true, message: 'Logout successful' });
     } catch (error) {
-        console.error('Erreur lors de la déconnexion de l\'utilisateur:', error);
-        res.status(500).json({ success: false, message: 'Erreur du serveur lors de la déconnexion' });
+        console.error('Error executing MySQL query:', error);
+        res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 };
+
 
 // Fonction pour hacher le mot de passe avec SHA-256
 function hashPassword(password) {

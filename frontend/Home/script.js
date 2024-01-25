@@ -7,3 +7,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
     bubble.style.backgroundColor = randomColor;
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    const logoutButton = document.getElementById('logout');
+
+    logoutButton.addEventListener('click', function () {
+        fetch(`${apiURL}/api/post/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Déconnexion réussie, redirigez vers la page de login
+                window.location.href = '../Home/connexion/login/login.html'; // Remplacez par la page de login appropriée
+            } else {
+                // Échec de la déconnexion
+                alert('Déconnexion échouée. Veuillez réessayer.');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la déconnexion:', error);
+            alert('Une erreur s\'est produite. Veuillez réessayer plus tard.');
+        });
+    });
+});
