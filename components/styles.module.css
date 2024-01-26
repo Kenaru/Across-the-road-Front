@@ -1,0 +1,70 @@
+/* styles.module.css */
+
+/* Styles pour Login et Register component */
+.loginContainer {
+  display: flex;
+  flex: 1;
+}
+
+.leftPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  padding: 20px;
+}
+
+.rightPanel {
+  flex: 1;
+  padding: 5%;
+  border-radius: 21px;
+  justify-content: center;
+}
+
+.form {
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 21px;
+  margin: 10%;
+}
+
+.input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-color: black;
+  border-radius: 100px;
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+.heading {
+  font-size: 24px;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.button {
+  padding: 20px;
+  background-color: transparent;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: black;
+  border: none;
+  cursor: pointer;
+  font-size: 23.6px;
+}
+
+.link {
+  text-align: start;
+  text-decoration: none;
+  color: #4f4f4f;
+  font-size: 14.3px;
+  margin-bottom: 10px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+
