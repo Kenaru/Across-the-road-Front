@@ -25,3 +25,5 @@ yarn-error.log*
 # ignoré le dossier venv
 venv/
 node_modules
+
+

@@ -8,7 +8,7 @@ function Register() {
     lastname: '',
     firstname: '',
     birthday: '',
-    mail: '',
+    email: '',
     phonenumber: '',
     password: '',
   });
@@ -43,7 +43,7 @@ function Register() {
         <input type="text" name="lastname" placeholder="Last Name" value={formData.lastname} onChange={handleChange} required />
         <input type="text" name="firstname" placeholder="First Name" value={formData.firstname} onChange={handleChange} required />
         <input type="date" name="birthday" placeholder="Birthday" value={formData.birthday} onChange={handleChange} />
-        <input type="email" name="mail" placeholder="Email" value={formData.mail} onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
         <input type="text" name="phonenumber" placeholder="Phone Number" value={formData.phonenumber} onChange={handleChange} />
         <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
         <button type="submit" className="register-button">Register</button>
