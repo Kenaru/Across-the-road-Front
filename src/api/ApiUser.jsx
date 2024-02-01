@@ -15,8 +15,8 @@ export const setAuthToken = (token) => {
 
 export const Login_user = async (credentials) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/login`, credentials);
-    return response.data; // This should include the token
+    const response = await axios.post(`${API_BASE_URL}/login_user`, credentials);
+    return response.data; 
   } catch (error) {
     throw error.response.data;
   }
@@ -25,8 +25,8 @@ export const Login_user = async (credentials) => {
 
 export const Register_user = async (credentials) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/register`, credentials);
-    return response.data; // This should include the token
+    const response = await axios.post(`${API_BASE_URL}/register_user`, credentials);
+    return response.data; 
   } catch (error) {
     throw error.response.data;
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Register_user } from '../api/ApiUser'; // Make sure this function is correctly implemented
+import { Register_user } from '../api/ApiUser'; 
 import { useNavigate } from 'react-router-dom';
 import '../Sass/Register.scss'; 
 
