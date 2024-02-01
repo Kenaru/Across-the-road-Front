@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { loginUser } from '../api/ApiUser';
-import { setAuthToken } from '../api/AuthToken';
+import { Login_user, setAuthToken } from '../api/ApiUser';
 import '../Sass/Login.scss';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -19,13 +18,9 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await loginUser(formData);
-      if (response.token) {
-        setAuthToken(response.token);
-        navigate('/Posts');
-      } else {
-        setError(`Login failed: ${response.message || 'Invalid response from server'}`);
-      }
+      const { token } = await Login_user(formData);
+      setAuthToken(token);
+      navigate('/'); 
     } catch (error) {
       console.error("Login Error:", error);
       setError('Login failed: ' + (error.message || 'Please check your credentials'));
@@ -70,8 +65,9 @@ function Login() {
           </button>
         </form>
         {loading && <div className="loading-indicator">Loading...</div>}
+ 
         <div className="register-link">
-          Don't have an account? <Link to="/Register">Register</Link>
+          Don't have an account? <Link to="/register">Register</Link>
         </div>
       </div>
   );

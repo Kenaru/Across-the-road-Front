@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import PostsCard from './PostsCard'; // Import your PostsCard component
-import { getAllPosts, deletePostOnApi, addCommentToPost, toggleLikeOnPost } from '../api/PostsApi'; // Import API functions
+import PostsCard from '../PostsCard'; 
+import { getAllPosts, deletePostOnApi, addCommentToPost, toggleLikeOnPost } from '../../api/PostsApi'; // Import API functions
 
 function PostsContainer({ userId }) {
     const [posts, setPosts] = useState([]);
@@ -8,7 +8,6 @@ function PostsContainer({ userId }) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Fetch all posts
         getAllPosts()
             .then((response) => {
                 setPosts(response); // Set the posts data in the state
