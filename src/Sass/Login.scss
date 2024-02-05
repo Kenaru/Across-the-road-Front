@@ -1,101 +1,122 @@
-.login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.5); // Semi-transparent white
-  padding: 2rem;
-  margin: 200px auto; // Center container on page, the top and bottom margin is 200px
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  height: auto; // Changed to auto to accommodate content
 
-  h2 {
-    color: #333;
-    margin-bottom: 1rem;
+  body {
+    background: linear-gradient(270deg, #010132 100%, #723c8d 15%);
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
   }
 
-  form {
+  .page-wrapper {
+    position: relative;
+    min-height: 100vh;
+
+  }
+
+
+  .logo-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateY(10%);
+    width: 90%;
+    max-width: 250px;
+    height: auto;
+    z-index: 10;
+  }
+
+  .login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+    margin: 100px auto auto;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgb(255, 255, 255);
     width: 100%;
-    max-width: 360px;
+    max-width: 400px;
 
-    .form-group {
-      margin-bottom: 2rem; // Increased spacing between form inputs
+    h2 {
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
 
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
-      }
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 1rem;
 
-      input[type="email"],
-      input[type="password"] {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #333;
-        border-radius: 30px;
-        background-color: rgba(255, 255, 255, 0.5);
-        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      input[type="mail"],
+      input[type="password"], {
+        width: 90%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        background-color: #fff;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
 
         &:focus {
+          border-color: #007bff;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
           outline: none;
-          box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+        }
+      }
+
+
+      button[type="submit"] {
+        width: 100%;
+        padding: 12px;
+        margin: 0;
+        background-color: #af0213;
+        color: white;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: darken(#af0213, 10%);
+        }
+
+        &:disabled {
+          background-color: lighten(#af0213, 10%);
+          cursor: not-allowed;
         }
       }
     }
 
-    button[type="submit"] {
-      width: 100%;
-      padding: 12px;
+    .error-message {
+      color: #dc3545;
+      text-align: center;
       margin-top: 1rem;
-      background-color: #333;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+    }
 
-      &:hover {
-        background-color: darken(#333, 10%);
-      }
+    .register-link {
+      margin-top: 1rem;
 
-      &:disabled {
-        background-color: lighten(#333, 10%);
-        cursor: not-allowed;
+      a {
+        color: #ffffff;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
 
-  .error-message {
-    color: red;
-    text-align: center;
-    margin-top: 1rem;
-  }
-
-  .register-link {
-    margin-top: 1rem;
-    
-    a {
-      color: #333;
-      text-decoration: none;
-      
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-}
 
 @media (max-width: 768px) {
-  .login-container {
-    margin: 1rem;
-    padding: 1rem;
-    width: auto; // Ensure it fits within the viewport
+    .login-container {
+      margin: 50px auto;
+      padding: 1rem;
+    }
+    .logo-container{
+      display: none;
+    }
   }
-}
-
-body {
-  background: url('../assets/loginregister.png') no-repeat center center fixed;
-  background-size: cover;
-}

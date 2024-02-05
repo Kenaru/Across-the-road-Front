@@ -1,33 +1,43 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5500'; // Replace with your actual API base URL
+// Make sure this matches the port your backend server is actually running on
+const API_BASE_URL = 'http://localhost:5000';
 
-
-export const setAuthToken = (token) => {
-  if (token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    localStorage.setItem('token', token);
-  } else {
-    delete axios.defaults.headers.common['Authorization'];
-    localStorage.removeItem('token');
-  }
-};
+const api = axios.create({
+  baseURL: API_BASE_URL,
+});
 
 export const Login_user = async (credentials) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/login_user`, credentials);
-    return response.data; 
+    // Correct endpoint for login, assuming your backend defines it as such
+    const response = await api.post('/api/post/login', credentials); // Adjusted to match your backend route
+    return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw new Error('Failed to log in.');
   }
 };
-
 
 export const Register_user = async (credentials) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/register_user`, credentials);
-    return response.data; 
+    // Correct endpoint for registration, ensure it matches your server's route
+    const response = await api.post('/api/post/register', credentials); // This should match your backend route
+    return response.data;
   } catch (error) {
-    throw error.response.data;
+    throw new Error('Failed to register.');
   }
 };
+
+
+export const Logout_user = () => {
+  localStorage.removeItem('token');
+
+  api.post('/api/post/logout')
+      .then(response => {
+        console.log('Logged out successfully:', response.data);
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+      });
+
+};
+
