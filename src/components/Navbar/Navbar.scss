@@ -1,0 +1,38 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: linear-gradient(270deg, #010132 100%, #6f13ad 0%,);
+  width: inherit;
+  border-radius: 20px;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.7);
+
+  }
+}
+
+.nav-logo a img {
+  height: 100px;
+
+}
+
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  li {
+    margin-left: 20px;
+
+    a {
+      text-decoration: none;
+      color: #ffffff;
+      font-size: 1rem;
+    }
+  }
+}
