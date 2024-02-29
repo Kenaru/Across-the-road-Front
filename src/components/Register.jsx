@@ -91,7 +91,7 @@ function Register() {
                        required/>
                 <button type="submit" className="register-button">Register</button>
                 <div className="login-link">
-                    Do have an account? <Link to="/login">Loggin</Link>
+                    Do have an account? <Link to="/Login">Loggin</Link>
                 </div>
 
             </form>

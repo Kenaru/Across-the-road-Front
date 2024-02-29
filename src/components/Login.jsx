@@ -72,6 +72,9 @@ function Login() {
           <div className="register-link">
             Don't have an account? <Link to="/register">Create an account</Link>
           </div>
+          <div className="register-link">
+            Change your password <Link to="/resetpassword">Change your password ?</Link>
+          </div>
         </div>
       </div>
   );
