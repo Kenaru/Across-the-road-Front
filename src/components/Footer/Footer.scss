@@ -5,65 +5,69 @@
   justify-content: center;
   text-align: center;
   font-family: 'Poppins', sans-serif;
-  border-top: 2px solid #000000;
-  padding-top: 1.5rem;
+  border-top: 2px solid #ffffff;
+  border-radius: 20px;
 
-  .footer-links {
+  background: linear-gradient(270deg, #010303 100%, #010303 50%);
+  width: 100%;
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20rem;
+  margin-bottom: 2rem;
+  width: 100%;
+
+  .link-group {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20rem;
-    margin-bottom: 2rem;
-    width: 100%;
+    flex-direction: column;
+    align-items: center;
 
-    .link-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center; 
+    h4 {
+      font-weight: normal;
+      font-size: 25px;
+      line-height: 27px;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
 
-      h4 {
-        font-weight: normal;
-        font-size: 25px;
-        line-height: 27px;
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        font-size: 16px;
+        line-height: 24px;
         color: #ffffff;
-        margin-bottom: 1rem; 
-      }
+        margin-bottom: 1rem;
+        cursor: pointer;
 
-      ul {
-        list-style-type: none;
-        padding: 0; 
-        margin: 0; 
-
-        li {
-          font-size: 16px;
-          line-height: 24px;
+        &:hover {
           color: #ffffff;
-          margin-bottom: 1rem;
-          cursor: pointer;
+        }
 
-          &:hover {
-            color: #f6f8f8;
-          }
-
-          &:last-child {
-            margin-bottom: 0;
-          }
+        &:last-child {
+          margin-bottom: 0;
         }
       }
     }
   }
+}
 
-  .social-media {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
+.social-media {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
 
-    a {
-      img {
-        width: 21px;
-        height: 21px;
-        cursor: pointer;
-      }
+  a {
+    img {
+      width: 21px;
+      height: 21px;
+      cursor: pointer;
     }
   }
 }

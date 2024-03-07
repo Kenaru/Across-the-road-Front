@@ -1,0 +1,65 @@
+/* CMS.scss */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  background-color: #4f4f4f;
+
+}
+
+.sidebar > div {
+  width: 100%;
+  padding: 20px;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+}
+
+.sidebar > div svg {
+  margin-right: 10px;
+}
+
+.sidebar > div span {
+  flex-grow: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding-left: 200px;
+}
+
+.droppable {
+  position: relative;
+  padding: 20px;
+  background: linear-gradient(270deg, #6f13ad 0%, #010132 100%);
+}
+
+.selected {
+  border: 2px solid #ff0000; /* Example border for selected component */
+}
+
+.options {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+

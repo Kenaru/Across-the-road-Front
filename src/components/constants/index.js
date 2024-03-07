@@ -30,7 +30,7 @@ export const feedback = [
         id: "feedback-1",
         content:
             "Un outils accessible et necessaire pour la vivacité des associations.",
-        name: "John Dufour",
+        name: "Jeane Dufour",
         title: "Fondateur association",
         img: people01,
     },

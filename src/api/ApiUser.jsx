@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Make sure this matches the port your backend server is actually running on
+
 const API_BASE_URL = 'http://localhost:5000';
 
 const api = axios.create({
@@ -9,8 +9,8 @@ const api = axios.create({
 
 export const Login_user = async (credentials) => {
   try {
-    // Correct endpoint for login, assuming your backend defines it as such
-    const response = await api.post('/api/post/login', credentials); // Adjusted to match your backend route
+
+    const response = await api.post('/api/post/login', credentials);
     return response.data;
   } catch (error) {
     throw new Error('Failed to log in.');
@@ -19,8 +19,8 @@ export const Login_user = async (credentials) => {
 
 export const Register_user = async (credentials) => {
   try {
-    // Correct endpoint for registration, ensure it matches your server's route
-    const response = await api.post('/api/post/register', credentials); // This should match your backend route
+
+    const response = await api.post('/api/post/register', credentials);
     return response.data;
   } catch (error) {
     throw new Error('Failed to register.');

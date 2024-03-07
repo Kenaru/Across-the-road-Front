@@ -1,10 +1,9 @@
 import React from 'react';
-import { useNavigate,Link } from 'react-router-dom';
-import { setAuthToken } from '../../api/Authcontext';
-import logo from '../../assets/logo_b.png';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/logo_b.png'; // Import the logo image
 import './Navbar.scss';
 
-export const navLinks = [
+const navLinks = [
     {
         id: "home",
         title: "Home",
@@ -26,34 +25,35 @@ export const navLinks = [
         title: "Associations",
     }
 ];
+
 const Navbar = () => {
-    const navigate = useNavigate();
-    const isAuthenticated = localStorage.getItem('token') ? true : false;
+    const isAuthenticated = !!localStorage.getItem('token');
 
     const handleLogout = () => {
-        setAuthToken(null); //
-        localStorage.removeItem('userToken');
-        navigate('/');
+        localStorage.removeItem('token');
     };
 
     return (
         <nav className="navbar">
             <div className="nav-logo">
-                <a href="#home">
-                    <img src={logo} alt="Logo" />
-                </a>
+                <img
+                    src={logo} // Use the imported logo variable here
+                    alt="Logo"
+                />
             </div>
             <ul className="nav-links">
                 {navLinks.map((link) => (
                     <li key={link.id}>
-                        <a href={`#${link.id}`}>{link.title}</a>
+                        <Link to={`/${link.id}`}>
+                            {link.title}
+                        </Link>
                     </li>
                 ))}
                 <li>
                     {isAuthenticated ? (
-                        <button onClick={handleLogout}>Connected</button> // Changed text to 'Connected'
+                        <button onClick={handleLogout}>Logout</button>
                     ) : (
-                        <Link to="/">Login</Link> // Display 'Login' when not authenticated
+                        <Link to="/login">Login</Link>
                     )}
                 </li>
             </ul>
