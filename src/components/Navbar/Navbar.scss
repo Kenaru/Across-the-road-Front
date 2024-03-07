@@ -2,37 +2,79 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  background: linear-gradient(270deg, #010132 100%, #6f13ad 0%,);
-  width: inherit;
+  padding: 20px;
+  background: linear-gradient(270deg, #010132 100%, #6f13ad 0%);
+  width: 100%;
   border-radius: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  height: 90px;
+  box-shadow: 0 8px 16px rgb(255, 255, 255);
+  margin-bottom: 40px;
 
   &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.7);
-
+    transform: scale(1.05); /* Increase the scale on hover */
   }
-}
 
-.nav-logo a img {
-  height: 100px;
+  .nav-logo {
+    input[type="file"] {
+      display: none;
+    }
 
-}
+    img {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+    }
+  }
 
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
 
-.nav-links {
-  list-style: none;
-  display: flex;
-  margin: 0;
-  padding: 0;
+    li {
+      margin-left: 20px;
 
-  li {
-    margin-left: 20px;
+      input {
+        display: none;
+      }
 
-    a {
-      text-decoration: none;
-      color: #ffffff;
-      font-size: 1rem;
+      a {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 1rem;
+
+        &:hover {
+          text-decoration: underline; /* Underline the links on hover */
+        }
+      }
+    }
+  }
+
+  .add-link-form,
+  .update-logo-form {
+    margin-top: 10px;
+
+    input {
+      margin-right: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #6f13ad;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #4a087c;
+      }
     }
   }
 }

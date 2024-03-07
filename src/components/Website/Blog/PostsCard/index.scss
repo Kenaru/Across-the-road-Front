@@ -1,0 +1,30 @@
+.posts-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+
+  .post-comment-input {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+
+    input[type="text"] {
+      flex-grow: 1;
+      margin-right: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  }
+}

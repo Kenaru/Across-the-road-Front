@@ -1,0 +1,54 @@
+.services-section {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row; /* Arrange items horizontally */
+  justify-content: center; /* Center items horizontally */
+  gap: 2rem;
+  padding: 100px;
+  margin: 10rem;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+.service {
+  width: 100%; /* Set the width */
+  height: 350px; /* Set the height */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden; /* Ensure content does not overflow */
+  background: linear-gradient(270deg, #6f13ad 0%, #010132 100%);
+  box-shadow: 0 4px 8px rgb(218, 6, 6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex; /* Make it a flex container */
+  flex-direction: column; /* Arrange child items vertically */
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.service-icon {
+  width: 80px;
+  height: 80px;
+  margin-top: 20px; /* Adjust margin */
+}
+
+.service-title {
+  margin: 20px 0; /* Adjust margin */
+  font-size: 1.5rem;
+  color: #ffffff;
+}
+
+.service-content {
+  text-align: center;
+  padding: 0 20px; /* Adjust padding */
+  font-size: 1rem;
+  color: #ffffff; /* Updated to white */
+  overflow-y: auto; /* Add overflow-y to enable scrolling if content exceeds height */
+}
+
+.service:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgb(255, 255, 255);
+}

@@ -1,0 +1,58 @@
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10rem;
+
+
+  .logo {
+    max-width: 100px;
+    height: auto;
+  }
+}
+
+.stats-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 1rem;
+  border: solid white;
+
+
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    min-width: 150px;
+    border-color: whitesmoke;
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .stat-title {
+      font-size: 1rem;
+      color: #ffffff;
+    }
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgb(255, 255, 255);
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .stats-section {
+    flex-direction: column;
+    align-items: center;
+
+    .stat-item {
+      min-width: 100%;
+    }
+  }
+}

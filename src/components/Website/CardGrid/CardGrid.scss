@@ -1,0 +1,47 @@
+// CardGrid.scss
+
+.simple-grid {
+  padding: 3rem;
+  margin: 3rem;
+  display: flex; 
+  flex-direction: row; 
+  flex-wrap: wrap; 
+  justify-content: center; 
+  gap: 2rem;
+  
+  
+
+  .card {
+    flex: 0 0 calc(33.333% - 2rem); /* Set the width of each card */
+    margin-bottom: 2rem; /* Add some bottom margin for spacing */
+    padding: 1rem;
+    border: 1px solid #ddd;
+    justify-content: center; 
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-footer {
+      text-align: center; /* Center align the button */
+    }
+  }
+
+  .card-header {
+    padding-bottom: 1rem;
+  }
+
+  .card-body {
+    padding-bottom: 1rem;
+    color: #666;
+  }
+
+  .card-footer {
+    padding-top: 1rem;
+  }
+}

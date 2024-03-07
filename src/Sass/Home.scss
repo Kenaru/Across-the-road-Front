@@ -1,34 +1,24 @@
-
-
 .home-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  min-height: 100vh;
-  width: 100%;
   background: linear-gradient(270deg, #6f13ad 0%, #010132 100%);
   overflow-x: hidden;
-
-  > * {
-    width: 90%;
-    max-width: 1200px;
-    margin: 20px auto;
-  }
+  padding: 20px;
 }
-
 
 section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
   padding: 20px;
 }
 
 @media (min-width: 768px) {
   .home-container > * {
     width: 80%;
+    background: linear-gradient(270deg, #6f13ad 0%, #010132 100%);
   }
 }
