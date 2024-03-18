@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../Sass/Home.scss';
+import { Box } from '@chakra-ui/react'; // Importer Box de Chakra UI
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import Service from '../Service/Service';
@@ -7,26 +7,31 @@ import FeedbackSection from '../FeedbackSection/FeedbackSection';
 import StatsSection from '../StatsSection/StatsSection';
 import About from '../About/About';
 import CreateCMS from "../Website/CreateCMS/CreateCMS";
-import CMS from "../Website/Cms/CMS";
+
 
 function Home() {
-    const [showCMS, setShowCMS] = useState(false);
+   
+    const [showCMSItem, setShowCMSItem] = useState(false);
+    const [showCMSPage, setShowPage] = useState(false);
 
-    const toggleCMS = () => {
-        setShowCMS(!showCMS);
+    const toggleCMSItem = () => {
+        setShowCMSItem(!showCMSItem);
+    };
+    const toggleCMSPage = () => {
+        setShowPage(!showCMSPage);
     };
 
     return (
-        <div className="home-container">
+        <Box className="home-container" bgGradient="linear-gradient(270deg, #6f13ad 0%, #010132 100%)" overflowX="hidden" padding="20px">
             <Navbar />
             <About />
             <Service />
-            <CreateCMS toggleCMS={toggleCMS} />
+            <CreateCMS  toggleCMSItem={toggleCMSItem} toggleCMSPage={toggleCMSPage} />
             <StatsSection />
             <FeedbackSection />
             <Footer />
-            {showCMS && <CMS />}
-        </div>
+            
+        </Box>
     );
 }
 

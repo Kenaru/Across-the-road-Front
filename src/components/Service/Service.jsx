@@ -1,41 +1,43 @@
 import React from 'react';
+import { Box, Flex, Text, Image } from '@chakra-ui/react';
 import { shield, star } from "../../assets";
-import './Service.scss'
+
 const services = [
     {
         id: "services-1",
         icon: star,
-        title: "Création de sites web simplifiée",
+        title: "Créer votre site simplement",
         content:
-            "Créez facilement des sites web pour les associations. Accédez à un outil sécurisé hébergé en France, sans nécessité de compétences techniques.",
+            "Creation d'un site web pour les associations, Accédez à un outil sécurisé, hébergé en France et accessible sans compétences techniques.",
     },
     {
         id: "services-2",
         icon: shield,
-        title: "Visibilité en ligne pour tous",
+        title: "Une visibilité en ligne accessible à tous",
         content:
-            "Across the road rend la création de sites web simple et agréable. Glissez, déposez et créez vous-même simplement votre site internet. Aucune compétence technique requise. Créer son site facilement sans coder n'a jamais été aussi simple.",
+            "Across the road rend la création de site web simple et agréable. Glissez, déposez et créez vous-même simplement votre site internet.",
     },
     {
         id: "services-3",
         icon: shield,
-        title: "Engagement pour un avenir durable",
+        title: "Bien plus qu’une solution pour créer un site web",
         content:
-            "Nous nous engageons à être utiles pour nos utilisateurs, nos collaborateurs et le monde qui nous entoure. Nous avons la volonté de proposer une solution durable de création de sites. Pour s’inscrire dans la préservation de l’environnement, nous mesurons et réduisons au maximum notre empreinte carbone.",
+            "Nous avons la volonté de proposer une solution durable de création de site. ",
     },
 ];
 
-
 const Service = () => (
-    <section className="services">
+    <Flex className="services-section" border="1px solid #f8f6f6" padding="10rem"
+            textAlign="center" // Center the content horizontally
+            margin="5rem"wrap="wrap" justifyContent="center" gap="1rem" >
         {services.map((service) => (
-            <div key={service.id} className="service">
-                <img src={service.icon} alt={service.title} className="service-icon" />
-                <h3 className="service-title">{service.title}</h3>
-                <p className="service-content">{service.content}</p>
-            </div>
+            <Box key={service.id} className="service"  w="30%" h="250px" border="1px solid #ddd" borderRadius="10px" background="black" display="flex" flexDirection="column" alignItems="center" justifyContent="space-between" _hover={{ boxShadow: '0 8px 16px rgb(255, 255, 255)' }}>
+                <Image src={service.icon} alt={service.title} w="10%" h="auto" marginTop="20px" />
+                <Text className="service-title" fontSize="1em" color="#ffffff">{service.title}</Text>
+                <Text className="service-content"  marginBottom="20px" textAlign="center"  fontSize="1em" color="#ffffff" overflowY="auto">{service.content}</Text>
+            </Box>
         ))}
-    </section>
+    </Flex>
 );
 
 export default Service;

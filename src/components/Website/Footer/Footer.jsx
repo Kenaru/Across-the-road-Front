@@ -1,6 +1,6 @@
 import React from 'react';
+import { Box, Flex, Text, Link as ChakraLink, Image } from '@chakra-ui/react';
 import { facebook, instagram, linkedin, twitter } from "../assets";
-import './Footer.scss';
 
 const footerLinks = [
     {
@@ -76,29 +76,27 @@ const socialMedia = [
 
 const Footer = () => {
     return (
-        <footer className="footer">
-            <div className="footer-links">
+        <Flex direction="column" align="center" justify="center" textAlign="center" fontFamily="Poppins" borderTop="2px solid #ffffff" borderRadius="20px" padding="1.5rem" background="linear-gradient(270deg, #010132 100%, #6f13ad 0%)" width="100%" margin="0">
+            <Flex direction="row" justify="center" align="center" gap="5rem" marginBottom="2rem">
                 {footerLinks.map((group, index) => (
-                    <div key={index} className="link-group">
-                        <h4>{group.title}</h4>
-                        <ul>
+                    <Box key={index} className="link-group">
+                        <Text fontWeight="normal" fontSize="25px" lineHeight="27px" color="#ffffff" marginBottom="1rem">{group.title}</Text>
+                        <Flex direction="column" align="center">
                             {group.links.map((link, index) => (
-                                <li key={index}>
-                                    <a href={link.link}>{link.name}</a>
-                                </li>
+                                <ChakraLink key={index} href={link.link} color="#ffffff" fontSize="16px" lineHeight="24px" marginBottom="1rem" _hover={{ color: '#ffffff' }} target="_blank" rel="noopener noreferrer">{link.name}</ChakraLink>
                             ))}
-                        </ul>
-                    </div>
+                        </Flex>
+                    </Box>
                 ))}
-            </div>
-            <div className="social-media">
+            </Flex>
+            <Flex direction="row" justify="center" align="center" gap="1.5rem">
                 {socialMedia.map((media) => (
-                    <a key={media.id} href={media.link} target="_blank" rel="noopener noreferrer">
-                        <img src={media.icon} alt="Social Icon" />
-                    </a>
+                    <ChakraLink key={media.id} href={media.link} target="_blank" rel="noopener noreferrer">
+                        <Image src={media.icon} alt="Social Icon" w="21px" h="21px" cursor="pointer" />
+                    </ChakraLink>
                 ))}
-            </div>
-        </footer>
+            </Flex>
+        </Flex>
     );
 };
 

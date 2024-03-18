@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Navbar.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faSave, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Box, Flex, Button, Image, List, ListItem, Text } from '@chakra-ui/react';
+import logo from '../assets/logo_b.png'; // Import the logo image
 
-const navLinksData = [
+const navLinks = [
     {
         id: "home",
         title: "Home",
@@ -28,105 +27,40 @@ const navLinksData = [
 ];
 
 const Navbar = () => {
-    const navigate = useNavigate();
-    const isAuthenticated = localStorage.getItem('token') ? true : false;
-    const [editableLinks, setEditableLinks] = useState([...navLinksData]);
-    const [editingIndex, setEditingIndex] = useState(null);
-    const [newLinkTitle, setNewLinkTitle] = useState('');
-
-    useEffect(() => {
-        const storedLinks = localStorage.getItem('editableLinks');
-        if (storedLinks) {
-            setEditableLinks(JSON.parse(storedLinks));
-        }
-    }, []);
-
-    useEffect(() => {
-        localStorage.setItem('editableLinks', JSON.stringify(editableLinks));
-    }, [editableLinks]);
+    const isAuthenticated = !!localStorage.getItem('token');
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        navigate('/');
-    };
-
-    const handleEditLink = (index) => {
-        setEditingIndex(index);
-        setNewLinkTitle(editableLinks[index].title);
-    };
-
-    const handleSaveLink = (index) => {
-        const updatedLinks = [...editableLinks];
-        updatedLinks[index].title = newLinkTitle;
-        setEditableLinks(updatedLinks);
-        setEditingIndex(null);
-        setNewLinkTitle('');
-    };
-
-    const handleDeleteLink = (index) => {
-        const updatedLinks = [...editableLinks];
-        updatedLinks.splice(index, 1);
-        setEditableLinks(updatedLinks);
-    };
-
-    const handleAddLink = () => {
-        const newLink = {
-            id: `new-link-${editableLinks.length + 1}`,
-            title: newLinkTitle,
-        };
-        setEditableLinks([...editableLinks, newLink]);
-        setNewLinkTitle('');
     };
 
     return (
-        <nav className="navbar">
-            <ul className="nav-links">
-                {editableLinks.map((link, index) => (
-                    <li key={link.id}>
-                        {editingIndex === index ? (
-                            <>
-                                <input
-                                    type="text"
-                                    value={newLinkTitle}
-                                    onChange={(e) => setNewLinkTitle(e.target.value)}
-                                />
-                                <FontAwesomeIcon icon={faSave} onClick={() => handleSaveLink(index)} />
-                                <FontAwesomeIcon icon={faTrash} onClick={() => handleDeleteLink(index)} />
-                            </>
-                        ) : (
-                            <>
-                                <button onClick={() => navigate(`/${link.id}`)}>
-                                    {link.title}
-                                </button>
-                                <FontAwesomeIcon icon={faEdit} onClick={() => handleEditLink(index)} />
-                            </>
-                        )}
-                    </li>
-                ))}
-                <li>
-                    <form onSubmit={(e) => { e.preventDefault(); handleAddLink(); }}>
-                        <input
-                            type="text"
-                            value={newLinkTitle}
-                            onChange={(e) => setNewLinkTitle(e.target.value)}
-                            placeholder="New Link Title"
-                        />
-                        <button type="submit"><FontAwesomeIcon icon={faPlus} /></button>
-                    </form>
-                </li>
-            </ul>
-            <li>
-                {isAuthenticated ? (
-                    <button onClick={handleLogout}>Logout</button>
-                ) : (
-                    <input
-                        type="button"
-                        value="Login"
-                        onClick={() => navigate('/login')}
-                    />
-                )}
-            </li>
-        </nav>
+        <Flex width="100%">
+            <Box className="navbar" bgGradient="linear(to-r, #010132, #6f13ad)" borderRadius="20px" boxShadow="0 8px 16px rgba(255, 255, 255, 0.5)" padding="20px" marginBottom="40px" flexGrow={1}>
+                <Flex alignItems="center" justifyContent="space-between" width="100%"> {/* Adjusted width to 100% */}
+                    <Box className="nav-logo">
+                        <Image src={logo} alt="Logo" htmlWidth="50px" htmlHeight="50px" cursor="pointer" />
+                    </Box>
+                    <List display="flex" listStyleType="none" margin="0" padding="0">
+                        {navLinks.map((link) => (
+                            <ListItem key={link.id} marginLeft="20px">
+                                <Link to={`/${link.id}`}>
+                                    <Text color="white" fontSize="1rem" _hover={{ textDecoration: 'underline' }}>{link.title}</Text>
+                                </Link>
+                            </ListItem>
+                        ))}
+                        <ListItem>
+                            {isAuthenticated ? (
+                                <Button onClick={handleLogout} backgroundColor="#6f13ad" color="white" borderRadius="5px" padding="5px 10px" cursor="pointer" transition="background-color 0.3s" _hover={{ backgroundColor: '#4a087c' }}>Logout</Button>
+                            ) : (
+                                <Link to="/login">
+                                    <Text color="white" fontSize="1rem" _hover={{ textDecoration: 'underline' }}>Login</Text>
+                                </Link>
+                            )}
+                        </ListItem>
+                    </List>
+                </Flex>
+            </Box>
+        </Flex>
     );
 };
 

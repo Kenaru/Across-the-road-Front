@@ -1,42 +1,64 @@
 import React from 'react';
-import './StatsSection.scss';
+import { Box, Heading, Text, SimpleGrid, Center } from '@chakra-ui/react';
 
+const StatsSection = () => {
+  // Données statiques pour la démonstration
+  const data = [
+    { name: 'Total Websites', value: 10 },
+    { name: 'Total Tables', value: 20 },
+    { name: 'Total Elements', value: 100 },
+    { name: 'Max Elements in Table', value: 50 },
+  ];
 
-export const stats = [
-    {
-        id: "stats-1",
-        title:  "Visiteurs par jour",
-        value: "300+",
-    },
-    {
-        id: "stats-2",
-        title: "Associations",
-        value: "30+",
-    },
-    {
-        id: "stats-3",
-        title: "adherents",
-        value: "223",
-    },
-];
-
-const StatItem = ({ title, value }) => (
-    <div className="stat-item">
-        <h3 className="stat-value">{value}</h3>
-        <p className="stat-title">{title}</p>
-    </div>
-);
-
-const StatsSection = () => (
-
-    <>
-
-        <section className="stats-section">
-            {stats.map((stat) => (
-                <StatItem key={stat.id} {...stat} />
-            ))}
-        </section>
-    </>
-);
+  return (
+    <Box
+      bgGradient="linear-gradient(270deg, #6f13ad 0%, #010132 100%)"
+      color="white"
+      p="4"
+      borderRadius="md"
+      border="1px solid white"
+      backgroundPosition="center"
+      flex="1"
+    >
+      <Box p="6" borderRadius="lg" mb="4" padding="4rem" textAlign="center">
+        <Heading as="h2" size="lg" mb="2" color="white">
+          Aperçu
+        </Heading>
+        <Text color="white">
+          Vous trouverez ici des statistiques en temps réel sur les données du site Web.
+        </Text>
+      </Box>
+      <Heading as="h2" size="lg" mb="4" color="gray.200">
+        Statistiques en Temps Réel
+      </Heading>
+      <Center>
+        <SimpleGrid columns={2} spacing={4} justifyItems="center">
+          {data.map((entry, index) => (
+            <Box key={entry.name} textAlign="center">
+              <Box
+                width="200px"
+                height="200px"
+                bg={index % 2 === 0 ? '#0088FE' : '#00C49F'}
+                borderRadius="50%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                flexDirection="column"
+                boxShadow="md"
+              >
+                <Text color="white" fontSize="xl" fontWeight="bold">
+                  {entry.value}
+                </Text>
+                <Text color="gray.300" fontSize="md">
+                  {entry.name}
+                </Text>
+              </Box>
+            </Box>
+          ))}
+        </SimpleGrid>
+      </Center>
+    </Box>
+  );
+};
 
 export default StatsSection;
