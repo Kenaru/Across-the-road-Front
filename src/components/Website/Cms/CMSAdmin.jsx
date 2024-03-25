@@ -22,7 +22,7 @@ class CMSAdmin extends Component {
 
   componentDidMount() {
     axios
-      .get('http://localhost:3001/websitePages')
+      .get('/websitePages')
       .then((response) => {
         this.setState({ websitePages: response.data });
         this.computeAdminData(response.data);
@@ -32,7 +32,7 @@ class CMSAdmin extends Component {
       });
   }
 
-  computeAdminData(pages) {
+computeAdminData(pages) {
     let totalTables = 0;
     let totalElements = 0;
     let maxElementsInTable = 0;
@@ -40,12 +40,10 @@ class CMSAdmin extends Component {
 
     const adminData = {};
 
-    pages.forEach((page) => {
-        if (page.formData && page.formData.title) {
-            numWebsites++;
-        }
+    pages.forEach((website) => { // Iterate through each website
+        numWebsites++; // Increment numWebsites for each website
 
-        page.components.forEach((component) => {
+        website.components.forEach((component) => {
             totalTables++;
             const elementCount = Object.keys(component).length;
             totalElements += elementCount;
@@ -64,6 +62,7 @@ class CMSAdmin extends Component {
 
     this.setState({ totalTables, totalElements, maxElementsInTable, adminData, numWebsites });
 }
+
 
 
   handleTableClick = (table) => {
@@ -128,7 +127,7 @@ class CMSAdmin extends Component {
                     {page.id}
                   </Heading>
                   <Text fontSize="md">Description of the page.</Text>
-                  <Link to={`/CMSPage/${page.id}`}> {/* Link to CMSPage component */}
+                  <Link to={`/CMSPage/${page.id}`}> 
                     <Button colorScheme="blue" mt="20px" size="sm">
                       Learn More
                     </Button>
