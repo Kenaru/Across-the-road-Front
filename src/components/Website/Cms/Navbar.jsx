@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Flex, Button, Image, List, ListItem, Text, Input, IconButton, Switch, Stack } from '@chakra-ui/react';
-import { FaEdit, FaSave, FaTimes, FaUpload } from 'react-icons/fa';
-import { fetchNavbarData, updateNavbarItem, addNavbarItem, deleteNavbarItem } from '../../../api/NavbarApi';
+import { FaEdit, FaSave, FaTimes, FaUpload, FaPlus, FaTrash } from 'react-icons/fa';
 
 const Navbar = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
     const [logo, setLogo] = useState('../../assets/logo_b.png');
-    const [links, setLinks] = useState([]);
+    const [links, setLinks] = useState([
+        { id: 'home', title: 'Home' },
+        { id: 'about', title: 'A propos de Nous' },
+        { id: 'contact', title: 'Contact' },
+        { id: 'blog', title: 'Blog' }
+    ]);
     const [editMode, setEditMode] = useState(false);
 
     useEffect(() => {
-        async function loadNavbarData() {
-            try {
-                const data = await fetchNavbarData();
-                setLinks(data.links);  // Adjust according to how your data is structured
-                setLogo(data.logo);   // Assuming logo URL comes from the server
-            } catch (error) {
-                console.error("Failed to fetch navbar data:", error);
-            }
-        }
+        // Mock fetching data, can be replaced with actual API call
+        const loadNavbarData = async () => {
+            // Simulated fetch
+            const data = {
+                logo: '../../assets/logo_b.png',
+                links: [
+                    { id: 'home', title: 'Home' },
+                    { id: 'about', title: 'Apropos  de Nous' },
+                    { id: 'contact', title: 'Contact' },
+                    { id: 'blog', title: 'Blog' }
+                ]
+            };
+            setLinks(data.links);
+            setLogo(data.logo);
+        };
         loadNavbarData();
     }, []);
 
@@ -40,16 +50,27 @@ const Navbar = () => {
         setLinks(updatedLinks);
     };
 
-    const handleLogoChange = async (event) => {
+    const handleLogoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            try {
-                const imageUrl = await updateNavbarItem('logo', { image: file });
-                setLogo(imageUrl);
-            } catch (error) {
-                console.error("Failed to update logo:", error);
-            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setLogo(reader.result);
+            };
+            reader.readAsDataURL(file);
         }
+    };
+
+    const handleAddLink = () => {
+        const newLink = {
+            id: Math.random().toString(36).substr(2, 9), // Generate a random ID
+            title: 'New Link'
+        };
+        setLinks([...links, newLink]);
+    };
+
+    const handleDeleteLink = (id) => {
+        setLinks(links.filter(link => link.id !== id));
     };
 
     return (
@@ -74,7 +95,7 @@ const Navbar = () => {
                 </Flex>
                 <List display="flex">
                     {links.map(link => (
-                        <ListItem key={link.id} ml="20px">
+                        <ListItem key={link.id} ml="20px" display="flex" alignItems="center">
                             {editMode ? (
                                 <>
                                     <Input
@@ -83,7 +104,15 @@ const Navbar = () => {
                                         size="sm"
                                         autoFocus
                                     />
-                                    <IconButton  onClick={toggleEditMode} size="xs" ml="2" color="white" variant="ghost" aria-label="Save" />
+                                    <IconButton
+                                        icon={<FaTrash />}
+                                        onClick={() => handleDeleteLink(link.id)}
+                                        size="xs"
+                                        ml="2"
+                                        color="white"
+                                        variant="ghost"
+                                        aria-label="Delete Link"
+                                    />
                                 </>
                             ) : (
                                 <Text as={Link} to={`/${link.id}`} cursor="pointer">{link.title}</Text>
@@ -95,16 +124,26 @@ const Navbar = () => {
                     <Switch isChecked={editMode} onChange={toggleEditMode} />
                     <Text ml={2}>Edit Mode</Text>
                 </Stack>
+                {editMode && (
+                    <IconButton
+                        icon={<FaPlus />}
+                        onClick={handleAddLink}
+                        colorScheme="blue"
+                        aria-label="Add Link"
+                        size="lg"
+                        mt="4"
+                    />
+                )}
                 {isAuthenticated ? (
                     <Button onClick={handleLogout} bg="transparent" color="white" _hover={{ bg: 'whiteAlpha.200' }}>Logout</Button>
                 ) : (
                     <Link to="/login">
                         <Text color="white" _hover={{ textDecoration: 'underline' }}>Login</Text>
                     </Link>
-                    )}
-                    </Flex>
-                    </Flex>
-                    );
-                };
+                )}
+            </Flex>
+        </Flex>
+    );
+};
 
-                export default Navbar;
+export default Navbar;

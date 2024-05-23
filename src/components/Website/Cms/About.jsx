@@ -1,105 +1,75 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Box, Flex, Image, Input, Textarea, IconButton, Switch, Stack, Text, useToast } from '@chakra-ui/react';
 import { FaPlus, FaUpload, FaTrash } from 'react-icons/fa';
-import { getAllSections, addSection, deleteSection, updateSection, handleImageUpload } from '../../../api/AboutAPI';
 
 const About = () => {
-    const [sections, setSections] = useState([]);
+    const [sections, setSections] = useState([
+        {
+            id: 'default',
+            title: 'Titre par défaut',
+            content: 'Contenu par défaut...',
+            imageUrl: ''
+        }
+    ]);
     const [isEditable, setIsEditable] = useState(false);
     const toast = useToast(); // Chakra UI toast for showing messages
 
-    useEffect(() => {
-        const fetchSections = async () => {
-            try {
-                const fetchedSections = await getAllSections();
-                setSections(fetchedSections);
-            } catch (error) {
-                toast({
-                    title: 'Erreur',
-                    description: error.message,
-                    status: 'error',
-                    duration: 5000,
-                    isClosable: true,
-                });
-            }
-        };
-        fetchSections();
-    }, []);
-
-    const handleAddSection = async () => {
+    const handleAddSection = () => {
         const newSection = {
+            id: Math.random().toString(36).substr(2, 9), // Generate a random ID
             title: "Nouveau Titre",
             content: "Nouveau contenu ici...",
             imageUrl: ''
         };
-        try {
-            const addedSection = await addSection(newSection);
-            setSections([...sections, { ...newSection, id: addedSection.id }]);
-        } catch (error) {
-            toast({
-                title: 'Erreur',
-                description: error.message,
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-            });
-        }
+        setSections(prevSections => [...prevSections, newSection]);
+        toast({
+            title: 'Section ajoutée',
+            description: 'Une nouvelle section a été ajoutée.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
     };
 
-    const handleEditSection = async (id, field, value) => {
-        const updatedSection = sections.map(section => {
+    const handleEditSection = (id, field, value) => {
+        const updatedSections = sections.map(section => {
             if (section.id === id) {
                 return { ...section, [field]: value };
             }
             return section;
         });
-        try {
-            await updateSection(id, { ...updatedSection.find(section => section.id === id) });
-            setSections(updatedSection);
-        } catch (error) {
-            toast({
-                title: 'Erreur',
-                description: error.message,
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-            });
-        }
+        setSections(updatedSections);
     };
 
-    const handleDeleteSection = async (id) => {
-        try {
-            await deleteSection(id);
-            setSections(sections.filter(section => section.id !== id));
-        } catch (error) {
-            toast({
-                title: 'Erreur',
-                description: error.message,
-                status: 'error',
-                duration: 5000,
-                isClosable: true,
-            });
-        }
+    const handleDeleteSection = (id) => {
+        setSections(sections.filter(section => section.id !== id));
+        toast({
+            title: 'Section supprimée',
+            description: 'La section a été supprimée.',
+            status: 'success',
+            duration: 3000,
+            isClosable: true,
+        });
     };
 
-    const handleImageChange = async (event, index) => {
+    const handleImageChange = (event, id) => {
         const file = event.target.files[0];
         if (file) {
-            try {
-                const imageUrl = await handleImageUpload(file);
-                await handleEditSection(index, 'imageUrl', imageUrl);
-            } catch (error) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const imageUrl = reader.result;
+                handleEditSection(id, 'imageUrl', imageUrl);
                 toast({
-                    title: 'Erreur',
-                    description: error.message,
-                    status: 'error',
-                    duration: 5000,
+                    title: 'Image téléchargée',
+                    description: "L'image a été téléchargée avec succès.",
+                    status: 'success',
+                    duration: 3000,
                     isClosable: true,
                 });
-            }
+            };
+            reader.readAsDataURL(file);
         }
     };
-
 
     return (
         <Flex direction="column" align="center" justify="center" minHeight="100vh" color="white" width="100%">
@@ -107,7 +77,7 @@ const About = () => {
                 <Text color="white" fontSize="lg" mr={2}>Edit Mode:</Text>
                 <Switch isChecked={isEditable} onChange={() => setIsEditable(!isEditable)} />
             </Stack>
-            {sections.map((section, index) => (
+            {sections.map((section) => (
                 <Flex color="white" key={section.id} direction="row" align="center" w="full" p="3" minHeight="200px">
                     {section.imageUrl && (
                         <Image src={section.imageUrl} alt="About Section" boxSize="50%" objectFit="cover" borderRadius="md" />
@@ -115,8 +85,22 @@ const About = () => {
                     <Box flex="1" pl="4">
                         {isEditable ? (
                             <>
-                                <Input variant="flushed" placeholder="Title" value={section.title} onChange={(e) => handleEditSection(index, 'title', e.target.value)} textAlign="center" />
-                                <Textarea variant="flushed" placeholder="Content" value={section.content} onChange={(e) => handleEditSection(index, 'content', e.target.value)} textAlign="center" />
+                                <Input
+                                    variant="flushed"
+                                    placeholder="Title"
+                                    value={section.title}
+                                    onChange={(e) => handleEditSection(section.id, 'title', e.target.value)}
+                                    textAlign="center"
+                                    color="white"
+                                />
+                                <Textarea
+                                    variant="flushed"
+                                    placeholder="Content"
+                                    value={section.content}
+                                    onChange={(e) => handleEditSection(section.id, 'content', e.target.value)}
+                                    textAlign="center"
+                                    color="white"
+                                />
                             </>
                         ) : (
                             <>
@@ -127,15 +111,43 @@ const About = () => {
                     </Box>
                     {isEditable && (
                         <Flex align="center">
-                            <IconButton color="white" icon={<FaUpload />} variant="ghost" onClick={() => document.getElementById(`file-input-${index}`).click()} size="sm" ml="2" aria-label="Upload image" />
-                            <input id={`file-input-${index}`} type="file" hidden onChange={(e) => handleImageChange(e, index)} />
-                            <IconButton icon={<FaTrash />} variant="ghost" color="white" onClick={() => handleDeleteSection(index)} size="sm" ml="2" aria-label="Delete section" />
+                            <IconButton
+                                color="white"
+                                icon={<FaUpload />}
+                                variant="ghost"
+                                onClick={() => document.getElementById(`file-input-${section.id}`).click()}
+                                size="sm"
+                                ml="2"
+                                aria-label="Upload image"
+                            />
+                            <input
+                                id={`file-input-${section.id}`}
+                                type="file"
+                                hidden
+                                onChange={(e) => handleImageChange(e, section.id)}
+                            />
+                            <IconButton
+                                icon={<FaTrash />}
+                                variant="ghost"
+                                color="white"
+                                onClick={() => handleDeleteSection(section.id)}
+                                size="sm"
+                                ml="2"
+                                aria-label="Delete section"
+                            />
                         </Flex>
                     )}
                 </Flex>
             ))}
             {isEditable && (
-                <IconButton icon={<FaPlus />} onClick={handleAddSection} colorScheme="blue" aria-label="Add section" size="lg" mt="4" />
+                <IconButton
+                    icon={<FaPlus />}
+                    onClick={handleAddSection}
+                    colorScheme="blue"
+                    aria-label="Add section"
+                    size="lg"
+                    mt="4"
+                />
             )}
         </Flex>
     );

@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import {
-    Box, Text, Image, Link as ChakraLink, Grid, Button, Heading, useToken
-} from '@chakra-ui/react';
+import { Box, Text, Image, Link as ChakraLink, Grid, Button, Heading } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -27,6 +25,7 @@ const Service = () => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         setShow(true);
+                        observer.disconnect();
                     }
                 });
             },
@@ -42,7 +41,6 @@ const Service = () => {
         return () => observer.disconnect();
     }, []);
 
-    // Define motion variants for animation
     const variants = {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0 }
@@ -74,7 +72,7 @@ const Service = () => {
                         height="600px"
                         align="center"
                     >
-                        <Image src={service.img} alt={service.title} objectFit="cover" height="250px" width="full" loading="lazy"/>
+                        <Image src={service.img} alt={service.title} objectFit="cover" height="250px" width="full"/>
                         <Box p={2} d="flex" flexDirection="column" justifyContent="space-between">
                             <Text padding="1rem" color="white" fontWeight="bold" fontSize="lg">
                                 {service.title}

@@ -7,7 +7,7 @@ import FeedbackSection from '../Homepage/FeedbackSection'
 import About from '../Homepage/About';
 import TeamSection from '../Homepage/TeamSection';
 import CreateCMS from "../Homepage/CreateCMS";
-import Blog from "./Blog";
+
 
 // Define keyframes for the background animation
 const gradient = keyframes`
