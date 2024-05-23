@@ -2,8 +2,31 @@ import React, { useState } from 'react';
 import { Login_user } from '../../api/ApiUser';
 import { setAuthToken } from '../../api/Authcontext';
 import logo from '../../assets/logo_b.png';
-import '../../Sass/Login.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  VStack,
+  Text,
+  Image,
+  extendTheme,
+  ChakraProvider,
+  CircularProgress
+} from '@chakra-ui/react';
+
+const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        bgGradient: "linear(to-l, #010132, #723c8d)",
+        color: "white",
+        fontFamily: "Arial, sans-serif",
+      },
+    },
+  },
+});
 
 function Login() {
   const [formData, setFormData] = useState({ mail: '', password: '' });
@@ -25,57 +48,40 @@ function Login() {
       navigate('/');
     } catch (error) {
       setError(error.message);
-    } finally {
-      setLoading(false);
+      setLoading(false);  
     }
   };
 
   return (
-      <div className="page-wrapper">
-        <div className="logo-container">
-          <img src={logo} alt="Logo" className="logo"/>
-        </div>
-
-        <div className="login-container">
-          <h2>Login</h2>
-
-          {error && <div className="error-message">{error}</div>}
-          <form onSubmit={handleLogin} className="login-form">
-            <div className="form-group">
-              <label htmlFor="email">Email:</label>
-              <input type="mail"
-                     name="mail"
-                     placeholder="Email"
-                     value={formData.email}
-                     onChange={handleChange}
-                     required/>
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password:</label>
-              <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  autoComplete="on"
-                  required
-              />
-            </div>
-            <button type="submit" disabled={loading} className="login-button">
-              {loading ? 'Please wait...' : 'Login'}
-            </button>
+    <ChakraProvider theme={theme}>
+      <Flex minHeight="100vh" align="center" justify="center">
+        <VStack spacing={4} bg="whiteAlpha.200" p={8} borderRadius="20px" boxShadow="0 4px 8px rgba(255, 255, 255, 0.3)" width="100%" maxW="400px">
+          <Image src={logo} alt="Logo" boxSize="150px" />
+          <Text fontSize="2xl">Login</Text>
+          {error && <Text color="red.500">{error}</Text>}
+          {loading && <CircularProgress isIndeterminate color="red.300" />}
+          <form onSubmit={handleLogin} style={{ width: '100%' }}>
+            <VStack spacing={4}>
+              <FormControl isRequired>
+                <Input color="Black" name="mail" placeholder="Email" type="email" value={formData.mail} onChange={handleChange} autoComplete="on" bg="white" />
+              </FormControl>
+              <FormControl isRequired>
+                <Input color="Black" name="password" placeholder="Password" type="password" value={formData.password} onChange={handleChange} autoComplete="on" bg="white" />
+              </FormControl>
+              <Button type="submit" colorScheme="purple" width="full" isLoading={loading} loadingText="Logging in">
+                Login
+              </Button>
+            </VStack>
           </form>
-          {loading && <div className="loading-indicator">Logging in...</div>}
-          <div className="register-link">
-            Don't have an account? <Link to="/register">Create an account</Link>
-          </div>
-          <div className="resetpassword-link">
-            <Link to="/Resetpassword">Reset your password</Link>
-          </div>
-        </div>
-      </div>
+          <RouterLink to="/register">
+            <Text mt={4} color="red" >Create an account</Text>
+          </RouterLink>
+          <RouterLink to="/Resetpassword">
+            <Text mt={2} color="white" >Reset your password</Text>
+          </RouterLink>
+        </VStack>
+      </Flex>
+    </ChakraProvider>
   );
 }
 

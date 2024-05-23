@@ -1,28 +1,29 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './api/Authcontext';
+
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import Home from "./components/pages/Home";
 import Resetpassword from "./components/pages/Resetpassword";
-import CMSItem from "./components/Website/Cms/CMSItem";
-import CMSPage from "./components/Website/Cms/CMSPage";
-import CMSAdmin from "./components/Website/Cms/CMSAdmin";
-
+import CMSItem from "./components/pages/CMSItem";
+import CMSAdmin from "./components/pages/CMSAdmin";
+import Blog from './components/pages/Blog';
 function App() {
     return (
-        <div className='App'>
+        <AuthProvider>
             <Router>
                 <Routes>
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/" element={<Home />} />
-                    <Route path="/CMSItem" element={<CMSItem />} />
-                     <Route path="/CMSAdmin" element={<CMSAdmin />} />
-                      <Route path="/CMSPage/:id" element={<CMSPage />} />
                     <Route path="/resetpassword" element={<Resetpassword />} />
+                    <Route path="/CMSItem" element={<CMSItem />} />
+                    <Route path="/CMSAdmin" element={<CMSAdmin />} />
+                    <Route path="/blog" element={<Blog />} />
                 </Routes>
             </Router>
-        </div>
+        </AuthProvider>
     );
 }
 

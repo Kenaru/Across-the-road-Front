@@ -1,79 +1,6 @@
 {
   "websitePages": [
     {
-      "id": "97f1",
-      "imports": [
-        "import Navbar from '../Navbar/Navbar';",
-        "import About from '../About/About';",
-        "import FeedbackSection from '../FeedbackSection/FeedbackSection';",
-        "import Service from '../Service/Service';",
-        "import Footer from '../Footer/Footer';"
-      ],
-      "components": [
-        {
-          "id": 1711390609115,
-          "component": {
-            "key": null,
-            "ref": null,
-            "props": {},
-            "_owner": null,
-            "_store": {}
-          },
-          "content": "Navbar content",
-          "type": "Navbar"
-        },
-        {
-          "id": 1711390611766,
-          "component": {
-            "key": null,
-            "ref": null,
-            "props": {},
-            "_owner": null,
-            "_store": {}
-          },
-          "content": "About content",
-          "type": "About"
-        },
-        {
-          "id": 1711390613124,
-          "component": {
-            "key": null,
-            "ref": null,
-            "props": {},
-            "_owner": null,
-            "_store": {}
-          },
-          "content": "Feedback section content",
-          "type": "FeedbackSection"
-        },
-        {
-          "id": 1711390615576,
-          "component": {
-            "key": null,
-            "ref": null,
-            "props": {},
-            "_owner": null,
-            "_store": {}
-          },
-          "content": "Service content",
-          "type": "Service"
-        },
-        {
-          "id": 1711390619650,
-          "component": {
-            "key": null,
-            "ref": null,
-            "props": {},
-            "_owner": null,
-            "_store": {}
-          },
-          "content": "Footer content",
-          "type": "Footer"
-        }
-      ],
-      "formData": null
-    },
-    {
       "id": "bced",
       "imports": [
         "import Navbar from '../Navbar/Navbar';",
@@ -107,6 +34,208 @@
         },
         {
           "id": 1711390993367,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "Footer content",
+          "type": "Footer"
+        }
+      ],
+      "formData": null
+    },
+    {
+      "id": "206e",
+      "imports": [
+        "import Navbar from '../Navbar/Navbar';",
+        "import About from '../About/About';",
+        "import FeedbackSection from '../FeedbackSection/FeedbackSection';",
+        "import Footer from '../Footer/Footer';"
+      ],
+      "components": [
+        {
+          "id": 1711717096784,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null
+          },
+          "content": "Navbar content",
+          "type": "Navbar"
+        },
+        {
+          "id": 1711717110452,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null
+          },
+          "content": "About content",
+          "type": "About"
+        },
+        {
+          "id": 1711717114445,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null
+          },
+          "content": "Feedback section content",
+          "type": "FeedbackSection"
+        },
+        {
+          "id": 1711717131053,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null
+          },
+          "content": "Footer content",
+          "type": "Footer"
+        }
+      ],
+      "formData": null
+    },
+    {
+      "id": "9d17",
+      "imports": [
+        "import Navbar from '../Navbar/Navbar';",
+        "import About from '../About/About';",
+        "import Service from '../Service/Service';",
+        "import StatsSection from '../StatsSection/StatsSection';",
+        "import Footer from '../Footer/Footer';"
+      ],
+      "components": [
+        {
+          "id": 1712255793427,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "Navbar content",
+          "type": "Navbar"
+        },
+        {
+          "id": 1712255805945,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "About content",
+          "type": "About"
+        },
+        {
+          "id": 1712255425633,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "Service content",
+          "type": "Service"
+        },
+        {
+          "id": 1712255961989,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "StatsSection content",
+          "type": "StatsSection"
+        },
+        {
+          "id": 1712256181841,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "Footer content",
+          "type": "Footer"
+        }
+      ],
+      "formData": null
+    },
+    {
+      "id": "0b2a",
+      "imports": [
+        "import Navbar from '../Navbar/Navbar';",
+        "import About from '../About/About';",
+        "import Service from '../Service/Service';",
+        "import StatsSection from '../StatsSection/StatsSection';",
+        "import Footer from '../Footer/Footer';"
+      ],
+      "components": [
+        {
+          "id": 1713956539874,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "Navbar content",
+          "type": "Navbar"
+        },
+        {
+          "id": 1713956541116,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "About content",
+          "type": "About"
+        },
+        {
+          "id": 1713956544005,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "Service content",
+          "type": "Service"
+        },
+        {
+          "id": 1713956546641,
+          "component": {
+            "key": null,
+            "ref": null,
+            "props": {},
+            "_owner": null,
+            "_store": {}
+          },
+          "content": "StatsSection content",
+          "type": "StatsSection"
+        },
+        {
+          "id": 1713956549819,
           "component": {
             "key": null,
             "ref": null,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Input, FormControl, FormLabel, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react'; 
 
 const CMSForm = ({ isOpen, onClose, onSubmit }) => {
-  const [formData, setFormData] = useState({}); // State to store form data
+  const [formData, setFormData] = useState({}); // State to+ store form data
 
   const handleChange = (event) => {
   const { name, value } = event.target;

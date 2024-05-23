@@ -1,17 +1,43 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_URL = 'http://localhost:5000/api';
 
-const api = axios.create({
-    baseURL: API_BASE_URL,
-});
+export const createPage = async (title) => {
+    try {
+        const response = await axios.post(`${API_URL}/pages`, { title });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to create page:', error);
+        throw error;
+    }
+};
 
-export const getprezOnline = async () =>{
-   try{
-       const response = await axios api.get('api/CountprezOnline')
-       return response.data
-   }catch (error) {
-       throw new Error('Failed to log in.');
-   }
+export const fetchPages = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/pages`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch pages:', error);
+        throw error;
+    }
+};
 
-}
+export const updatePage = async (id, title) => {
+    try {
+        const response = await axios.put(`${API_URL}/pages/${id}`, { title });
+        return response.data;
+    } catch (error) {
+        console.error('Failed to update page:', error);
+        throw error;
+    }
+};
+
+export const deletePage = async (id) => {
+    try {
+        const response = await axios.delete(`${API_URL}/pages/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to delete page:', error);
+        throw error;
+    }
+};
