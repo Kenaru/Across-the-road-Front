@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Reset_password } from '../../api/ApiUser';
+import registerUser, {resetPassword} from '../../api/authApi';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Button, Flex, FormControl, Input, Text, VStack, Image, extendTheme, ChakraProvider } from '@chakra-ui/react';
 import logo from '../../assets/logo_b.png';
@@ -29,7 +29,7 @@ function Resetpassword() {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      const response = await Reset_password(formData);
+      const response = await resetPassword(formData);
       console.log(response);
       navigate('/login');
     } catch (error) {

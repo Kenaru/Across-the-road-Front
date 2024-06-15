@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { Flex, Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, Input, Avatar, Heading, Text, Card, CardHeader, CardBody, CardFooter, IconButton, Image, useToast, useDisclosure, extendTheme, ChakraProvider, VStack, HStack, Icon } from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import {
+  Flex, Box, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter,
+  Input, Avatar, Heading, Text, Card, CardHeader, CardBody, CardFooter, IconButton, Image, useToast, useDisclosure,
+  extendTheme, ChakraProvider, VStack, HStack, Icon
+} from '@chakra-ui/react';
 import { BsThreeDotsVertical, BsTrash, BsPencil } from 'react-icons/bs';
 import { BiLike, BiChat, BiShare } from 'react-icons/bi';
 import { Global, css } from '@emotion/react';
+import Navbar from '../Homepage/Navbar';
+import Footer from '../Homepage/Footer';
+import { getAllPosts, getPostById, createPost, updatePost, deletePost } from '../../api/blogApi';
 
 // Extend the default theme with custom global styles
 const theme = extendTheme({
@@ -35,19 +42,7 @@ const keyframes = css`
 `;
 
 const Blog = () => {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "Default Post",
-      content: "This is a default post with only text.",
-      image: null,
-      userName: "John Doe",
-      likes: 10,
-      comments: [
-        { id: 1, userName: "Jane Smith", content: "This is a default comment." }
-      ]
-    }
-  ]);
+  const [posts, setPosts] = useState([]);
   const [editedPost, setEditedPost] = useState(null);
   const [commentToEdit, setCommentToEdit] = useState(null);
   const [newPost, setNewPost] = useState({ title: "", content: "", image: null });
@@ -55,26 +50,49 @@ const Blog = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const data = await getAllPosts();
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
+
   const handleEditPost = (post) => {
     setEditedPost(post);
     onOpen();
   };
 
-  const handleDeletePost = (postId) => {
-    setPosts(posts.filter(post => post.id !== postId));
-    toast({ title: "Post deleted successfully.", status: "error", duration: 3000, isClosable: true });
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+      setPosts(posts.filter(post => post.id !== postId));
+      toast({ title: "Post deleted successfully.", status: "error", duration: 3000, isClosable: true });
+    } catch (error) {
+      console.error('Error deleting post:', error);
+    }
   };
 
-  const handleSavePost = () => {
-    if (editedPost) {
-      setPosts(prevPosts => prevPosts.map(p => (p.id === editedPost.id ? editedPost : p)));
-      toast({ title: "Post edited successfully.", status: "success", duration: 3000, isClosable: true });
-    } else {
-      const newId = Math.max(...posts.map(post => post.id)) + 1;
-      setPosts(prevPosts => [...prevPosts, { ...newPost, id: newId, userName: "New User", likes: 0, comments: [] }]);
-      toast({ title: "Post added successfully.", status: "success", duration: 3000, isClosable: true });
+  const handleSavePost = async () => {
+    try {
+      if (editedPost) {
+        await updatePost(editedPost.id, editedPost);
+        setPosts(prevPosts => prevPosts.map(p => (p.id === editedPost.id ? editedPost : p)));
+        toast({ title: "Post edited successfully.", status: "success", duration: 3000, isClosable: true });
+      } else {
+        const data = await createPost({ ...newPost, userName: "New User" });
+        setPosts(prevPosts => [...prevPosts, { ...newPost, id: data.postId, userName: "New User", likes: 0, comments: [] }]);
+        toast({ title: "Post added successfully.", status: "success", duration: 3000, isClosable: true });
+      }
+      onClose();
+    } catch (error) {
+      console.error('Error saving post:', error);
     }
-    onClose();
   };
 
   const handleEditComment = (postId, comment) => {
@@ -82,34 +100,12 @@ const Blog = () => {
     onOpen();
   };
 
-  const handleSaveComment = () => {
-    if (commentToEdit) {
-      const updatedPosts = posts.map(post => {
-        if (post.id === commentToEdit.postId) {
-          return {
-            ...post,
-            comments: post.comments.map(comment => comment.id === commentToEdit.id ? { ...comment, content: newComment } : comment)
-          };
-        }
-        return post;
-      });
-      setPosts(updatedPosts);
-      toast({ title: "Comment updated successfully.", status: "success", duration: 3000, isClosable: true });
-      setCommentToEdit(null);
-    }
-    setNewComment('');
-    onClose();
+  const handleSaveComment = async () => {
+    // Implement comment saving logic here
   };
 
-  const handleDeleteComment = (postId, commentId) => {
-    const updatedPosts = posts.map(post => {
-      if (post.id === postId) {
-        return { ...post, comments: post.comments.filter(comment => comment.id !== commentId) };
-      }
-      return post;
-    });
-    setPosts(updatedPosts);
-    toast({ title: "Comment deleted successfully.", status: "info", duration: 3000, isClosable: true });
+  const handleDeleteComment = async (postId, commentId) => {
+    // Implement comment deletion logic here
   };
 
   const handleImageUpload = (event) => {
@@ -124,6 +120,7 @@ const Blog = () => {
   let isCommentOpen;
   return (
       <ChakraProvider theme={theme}>
+        <Navbar />
         <Global styles={keyframes} />
         <Flex align="center" justify="center" minHeight="100vh" className="content" padding="10rem">
           <Box>
@@ -163,7 +160,7 @@ const Blog = () => {
                     <Button variant='ghost' leftIcon={<BiShare />}>Share</Button>
                   </CardFooter>
                   <VStack spacing={3} align="stretch">
-                    {post.comments.map(comment => (
+                    {post.comments && post.comments.map(comment => (
                         <Box key={comment.id} bg="gray.100" p="3" rounded="md">
                           <Flex justify="space-between">
                             <Text fontWeight="bold">{comment.userName}</Text>
@@ -220,7 +217,7 @@ const Blog = () => {
             </Modal>
           </Box>
         </Flex>
-
+        <Footer />
       </ChakraProvider>
   );
 };

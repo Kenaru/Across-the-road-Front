@@ -9,11 +9,11 @@ import { Box } from '@chakra-ui/react';
 
 // Importing other components dynamically based on fetched data also find a way to implement this is the back end 
 const componentImports = {
-  Navbar: React.lazy(() => import('./Navbar')),
-  About: React.lazy(() => import('./About')),
-  FeedbackSection: React.lazy(() => import('./FeedbackSection')),
-  Service: React.lazy(() => import('./Service')),
-  Footer: React.lazy(() => import('./Footer')),
+  Navbar: React.lazy(() => import('../Website/Cms/Navbar')),
+  About: React.lazy(() => import('../Website/Cms/About')),
+  FeedbackSection: React.lazy(() => import('../Website/Cms/FeedbackSection')),
+  Service: React.lazy(() => import('../Website/Cms/Service')),
+  Footer: React.lazy(() => import('../Website/Cms/Footer')),
   StatsSection: StatsSection, // Include StatsSection in componentImports
 };
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Flex, Button, Image, List, ListItem, Text, Box } from '@chakra-ui/react';
 import logo from '../../assets/logo_b.png';
 import defaultLogo from '../../assets/user.png';
 
 const navLinks = [
   {
-    id: "home",
+    id: "/",
     title: "Home",
   },
   {
@@ -33,7 +33,7 @@ const Navbar = () => {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('userToken');
     setIsAuthenticated(!!token);
 
     const storedUserName = localStorage.getItem('userName');
@@ -41,12 +41,11 @@ const Navbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('userToken');
+    localStorage.removeItem('userName');
     setIsAuthenticated(false);
     navigate('/login');
   };
-
-
 
   return (
       <Flex
@@ -64,46 +63,37 @@ const Navbar = () => {
           zIndex={999}
       >
         {/* Website logo on the left */}
-        <Image src={logo} alt="Website Logo" htmlWidth="60px" htmlHeight="50px" cursor="pointer" />
+        <Image src={logo} alt="Website Logo" htmlWidth="60px" htmlHeight="50px" cursor="pointer" onClick={() => navigate('/')} />
 
         {/* Centered navigation links */}
         <List display="flex" flexDirection="row" flexGrow={1} justifyContent="center">
           {navLinks.map((link) => (
               <ListItem key={link.id} px={4}>
-                {link.id === 'blog' ? (
-                    <Link to="/blog"> {/* Assuming "/blog" is the route to the blog component */}
-                      <Text fontSize="1rem" _hover={{ textDecoration: 'underline' }}>
-                        {link.title}
-                      </Text>
-                    </Link>
-                ) : (
-
-                    <Link to={`/${link.id}`}>
-                      <Text fontSize="1rem" _hover={{ textDecoration: 'underline' }}>
-                        {link.title}
-                      </Text>
-                    </Link>
-                )}
+                <RouterLink to={link.id === "/" ? "/" : `/${link.id}`}>
+                  <Text fontSize="1rem" _hover={{ textDecoration: 'underline' }}>
+                    {link.title}
+                  </Text>
+                </RouterLink>
               </ListItem>
           ))}
         </List>
 
         {/* User or default logo and logout/login on the right */}
-        <Flex align="center">
-          <Image src={isAuthenticated ? defaultLogo : defaultLogo} alt="User Logo" htmlWidth="30px" htmlHeight="30px" cursor="pointer" />
+        <Flex align="center" direction="column">
+          <Image src={defaultLogo} alt="User Logo" htmlWidth="30px" htmlHeight="30px" cursor="pointer" />
           {isAuthenticated ? (
-              <>
-                <Box pl={3}><Text fontSize="1rem">{userName}</Text></Box>
-                <Button onClick={handleLogout} variant="solid" colorScheme="red" size="sm">
-                  Logout
+              <Box textAlign="center" mt={2}>
+                <Text fontSize="1rem">{userName}</Text>
+                <Button onClick={handleLogout} variant="link" mt={2}>
+                  <Text _hover={{ textDecoration: 'underline' }}>Logout</Text>
                 </Button>
-              </>
+              </Box>
           ) : (
-              <Link to="/login">
+              <RouterLink to="/login">
                 <Text fontSize="1rem" _hover={{ textDecoration: 'underline' }}>
                   Login
                 </Text>
-              </Link>
+              </RouterLink>
           )}
         </Flex>
       </Flex>

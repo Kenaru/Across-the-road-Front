@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './api/Authcontext';
+import { AuthProvider } from './api/authContext';
 
 import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
@@ -9,6 +9,7 @@ import Resetpassword from "./components/pages/Resetpassword";
 import CMSItem from "./components/pages/CMSItem";
 import CMSAdmin from "./components/pages/CMSAdmin";
 import Blog from './components/pages/Blog';
+
 function App() {
     return (
         <AuthProvider>
