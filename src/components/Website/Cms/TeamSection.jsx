@@ -300,7 +300,7 @@ const TeamSection = ({ initialData = { members: [defaultMember], info: defaultTe
                         transition="all 0.2s"
                     >
                         <FaPlus size={32} color="gray" />
-                        <Text mt="2" color="gray">Add Member</Text>
+                        <Text mt="2" color="gray">Ajouter un membre</Text>
                     </Flex>
                 )}
             </Flex>

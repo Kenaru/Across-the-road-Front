@@ -104,7 +104,7 @@ const Footer = ({ initialData, setInitialData }) => {
                 ))}
             </Flex>
             <Text fontSize="sm" color="white" mt="20px">
-                © 2024 Copyright
+                AcrossTheRoad© 2024 Copyright
             </Text>
         </Flex>
     );

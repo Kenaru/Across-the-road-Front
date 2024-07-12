@@ -86,13 +86,13 @@ const Navbar = ({ initialData, setInitialData }) => {
                 </List>
                 <Stack direction="row" align="center">
                     <Switch isChecked={editMode} onChange={toggleEditMode} />
-                    <Text ml={2}>Edit Mode</Text>
+                    <Text ml={2}>Mode écriture</Text>
                 </Stack>
                 {isAuthenticated ? (
-                    <Button onClick={handleLogout} bg="transparent" color="white" _hover={{ bg: 'whiteAlpha.200' }}>Logout</Button>
+                    <Button onClick={handleLogout} bg="transparent" color="white" _hover={{ bg: 'whiteAlpha.200' }}>Se déconnecter</Button>
                 ) : (
                     <ChakraLink href="/login">
-                        <Text color="white" _hover={{ textDecoration: 'underline' }}>Login</Text>
+                        <Text color="white" _hover={{ textDecoration: 'underline' }}>Se connecter</Text>
                     </ChakraLink>
                 )}
             </Flex>

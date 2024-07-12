@@ -75,10 +75,10 @@ function Login() {
               </VStack>
             </form>
             <RouterLink to="/register">
-              <Text mt={4} color="red">Create an account</Text>
+              <Text mt={4} color="red">Créer un compte</Text>
             </RouterLink>
             <RouterLink to="/resetpassword">
-              <Text mt={2} color="white">Reset your password</Text>
+              <Text mt={2} color="white">Reinitialiser votre mot de passe</Text>
             </RouterLink>
           </VStack>
         </Flex>

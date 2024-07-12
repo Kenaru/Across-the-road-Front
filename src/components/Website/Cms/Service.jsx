@@ -59,7 +59,7 @@ const Service = ({ initialData, setInitialData }) => {
                 Notre Identité
             </Heading>
             <Stack direction="row" justifyContent="center" alignItems="center" mb={4}>
-                <Text fontSize="lg" color="white" mr={2}>Modifiable View:</Text>
+                <Text fontSize="lg" color="white" mr={2}>Modifier la vue:</Text>
                 <Switch isChecked={isEditable} onChange={() => setIsEditable(!isEditable)} />
             </Stack>
             <Flex wrap="wrap" justifyContent="center" alignItems="flex-start" gap={6}>
@@ -93,7 +93,7 @@ const Service = ({ initialData, setInitialData }) => {
                                     <Image src={service.img} alt="Service Image" objectFit="cover" height="300px" width="100%" mb={2} />
                                 ) : (
                                     <Box height="300px" width="100%" mb={2} display="flex" justifyContent="center" alignItems="center" border="2px dashed gray">
-                                        <Text color="gray.500">Image Placeholder</Text>
+                                        <Text color="gray.500">Emplacement Image</Text>
                                     </Box>
                                 )}
                                 <Input mb={2} value={service.title} onChange={e => handleInputChange(index, 'title', e.target.value)} placeholder="Service Title" />
@@ -109,7 +109,7 @@ const Service = ({ initialData, setInitialData }) => {
                                     <Image src={service.img} alt="Service Image" objectFit="cover" height="300px" width="100%" mb={2} />
                                 ) : (
                                     <Box height="300px" width="100%" mb={2} display="flex" justifyContent="center" alignItems="center">
-                                        {isEditable && <Text color="gray.500">Image Placeholder</Text>}
+                                        {isEditable && <Text color="gray.500">Emplacement Image</Text>}
                                     </Box>
                                 )}
                                 <Text mb={2} fontWeight="bold" fontSize="2xl">{service.title}</Text>

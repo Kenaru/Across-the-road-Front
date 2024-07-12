@@ -128,12 +128,12 @@ const CMSItem = () => {
     return (
         <Flex direction="column" width="100%" bg="#010132" p={4}>
             <Flex mb={4} justifyContent="space-between" alignItems="center">
-                <Heading color="white">Create Page</Heading>
+                <Heading color="white">Créer une Page</Heading>
                 <FormControl>
-                    <FormLabel color="white">Page Title</FormLabel>
+                    <FormLabel color="white">Titre de Page</FormLabel>
                     <Input color="white" type="text" name="title" value={pageData.title} onChange={handleChange} />
                 </FormControl>
-                <Button colorScheme="blue" onClick={handleSavePage}>Save Page</Button>
+                <Button colorScheme="blue" onClick={handleSavePage}>Sauvegarder la Page</Button>
             </Flex>
             <Navbar initialData={componentsData.navbar} setInitialData={(data) => setComponentsData((prev) => ({ ...prev, navbar: data }))} />
             <About initialData={componentsData.aboutSections} setInitialData={(data) => setComponentsData((prev) => ({ ...prev, aboutSections: data }))} />

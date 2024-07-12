@@ -155,9 +155,9 @@ const Blog = () => {
                   </CardBody>
                   {post.image && <Image objectFit='cover' src={post.image} alt={post.title} />}
                   <CardFooter>
-                    <Button variant='ghost' leftIcon={<BiLike />}>Like</Button>
-                    <Button variant='ghost' leftIcon={<BiChat />}>Comment</Button>
-                    <Button variant='ghost' leftIcon={<BiShare />}>Share</Button>
+                    <Button variant='ghost' leftIcon={<BiLike />}>Jaime</Button>
+                    <Button variant='ghost' leftIcon={<BiChat />}>Commenter</Button>
+                    <Button variant='ghost' leftIcon={<BiShare />}>Partager</Button>
                   </CardFooter>
                   <VStack spacing={3} align="stretch">
                     {post.comments && post.comments.map(comment => (
@@ -196,8 +196,8 @@ const Blog = () => {
                   <Input type="file" onChange={handleImageUpload} />
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={handleSavePost}>Save</Button>
-                  <Button variant="ghost" onClick={onClose}>Cancel</Button>
+                  <Button colorScheme="blue" mr={3} onClick={handleSavePost}>Sauvegarder</Button>
+                  <Button variant="ghost" onClick={onClose}>Retour</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
@@ -210,8 +210,8 @@ const Blog = () => {
                   <Input placeholder="Comment Content" mb={3} value={commentToEdit ? commentToEdit.content : newComment} onChange={(e) => { if (commentToEdit) setCommentToEdit(prevState => ({ ...prevState, content: e.target.value })); else setNewComment(e.target.value); }} />
                 </ModalBody>
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={handleSaveComment}>Save</Button>
-                  <Button variant="ghost" onClick={onClose}>Cancel</Button>
+                  <Button colorScheme="blue" mr={3} onClick={handleSaveComment}>Sauvegarder</Button>
+                  <Button variant="ghost" onClick={onClose}>Retour</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>

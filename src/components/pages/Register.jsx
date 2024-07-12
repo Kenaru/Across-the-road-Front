@@ -119,11 +119,11 @@ function Register() {
                             <FormControl isRequired>
                                 <Input placeholder="Confirm Password" type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} bg="white" color="gray.800" />
                             </FormControl>
-                            <Button type="submit" colorScheme="purple" width="full">Register</Button>
+                            <Button type="submit" colorScheme="purple" width="full">S'inscrire</Button>
                         </VStack>
                     </form>
                     <Flex direction="column" align="center" mt={4}>
-                        <Link as={RouterLink} to="/login" color="white">Login</Link>
+                        <Link as={RouterLink} to="/login" color="white">Se connecter</Link>
                     </Flex>
                 </VStack>
             </Flex>

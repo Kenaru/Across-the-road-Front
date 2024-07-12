@@ -78,8 +78,8 @@ const FeedbackSection = () => {
                 </Text>
                 <Text fontSize="20px" color="white">
                     Découvrez les retours de nos utilisateurs qui apprécient l'impact de notre
-                    solution sur la dynamique associative. Chaque avis souligne l'importance
-                    de notre outil dans leur quotidien et contribue à une meilleure visibilité.
+                    solution sur la dynamique associative. L'importance de notre outil 
+                    dans leur quotidien et contribue à une meilleure visibilité.
                 </Text>
             </VStack>
             <Divider orientation="vertical" borderColor="white" borderWidth="2px" height="500px"/>

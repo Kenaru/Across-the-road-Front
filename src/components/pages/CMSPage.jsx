@@ -42,11 +42,11 @@ const CMSPage = () => {
   }, [id]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Chargement...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>Erreur: {error}</div>;
   }
 
   if (!pageData) {
@@ -60,7 +60,7 @@ const CMSPage = () => {
       if (!Component) return null; 
 
       return (
-        <React.Suspense key={index} fallback={<div>Loading...</div>}>
+        <React.Suspense key={index} fallback={<div>Chargement...</div>}>
            
             <Component content={component.content} />
         
@@ -71,7 +71,7 @@ const CMSPage = () => {
 
   return (
     <Box bg="#010132">
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense fallback={<div>Chargement...</div>}>
       {renderComponents()}
     </React.Suspense>
     </Box>

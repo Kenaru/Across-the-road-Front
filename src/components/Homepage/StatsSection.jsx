@@ -67,7 +67,7 @@ const StatsSection = () => {
         Overview
       </Heading>
       <Text mb={6}>
-        Ici on peut observer les statistiques de nos clients et utilisateurs.
+        Les statistiques de nos clients et utilisateurs.
       </Text>
       <Heading as="h2" size="lg" color="gray.200" mb={4}>
         Statistiques en temps réel

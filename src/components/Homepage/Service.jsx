@@ -49,7 +49,7 @@ const Service = () => {
     return (
         <Box ref={ref} mb="5rem" mt="200px" textAlign="center" justifyContent="center" alignContent="center">
             <Heading as="h2" size="xl" mb="4rem" color="white">
-                Révolutionnez Votre Association avec Nos SiteWeb Dynamique
+                Révolutionnez Votre Association avec Nos Sites Web Dynamique
             </Heading>
             <Text margin="4rem" color="white">
                 Chez <strong>Across The Road</strong>, nous offrons un CMS sur mesure et personnalisable

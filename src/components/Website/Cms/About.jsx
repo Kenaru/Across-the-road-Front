@@ -98,7 +98,7 @@ const About = ({ initialData, setInitialData }) => {
     return (
         <Flex direction="column" align="center" justify="center" minHeight="100vh" color="white" width="100%" p="5rem">
             <Stack direction="row" justifyContent="center" alignItems="center" mb={4}>
-                <Text color="white" fontSize="lg" mr={2}>Edit Mode:</Text>
+                <Text color="white" fontSize="lg" mr={2}>Mode écriture:</Text>
                 <Switch isChecked={isEditable} onChange={() => setIsEditable(!isEditable)} />
             </Stack>
             <Flex wrap="wrap" justify="center" gap={4}>
@@ -122,7 +122,7 @@ const About = ({ initialData, setInitialData }) => {
                                     color="gray.500"
                                     m="4"
                                 >
-                                    Image Placeholder
+                                    Emplacement Image
                                 </Box>
                             )
                         )}
@@ -225,7 +225,7 @@ const About = ({ initialData, setInitialData }) => {
                         onClick={handleAddSection}
                     >
                         <FaPlus size={32} color="gray" />
-                        <Text mt={2} color="gray">Add Section</Text>
+                        <Text mt={2} color="gray">Ajouter une section</Text>
                     </Flex>
                 )}
             </Flex>

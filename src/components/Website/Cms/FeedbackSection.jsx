@@ -79,7 +79,7 @@ const FeedbackSection = ({ initialData, setInitialData }) => {
         <Flex direction="column" align="center" justify="center" minHeight="100vh" color="white" width="100%" p="4">
             <Heading as="h2" size="xl" mt="5rem" color="white">Avis sur l'Association</Heading>
             <Stack direction="column" justifyContent="center" alignItems="center" mb={4}>
-                <Text fontSize="lg" mr={2}>Edit Mode:</Text>
+                <Text fontSize="lg" mr={2}>Mode écriture:</Text>
                 <Switch isChecked={isEditable} onChange={() => setIsEditable(!isEditable)} />
             </Stack>
             <Flex wrap="wrap" justify="center" gap={4}>
@@ -216,7 +216,7 @@ const FeedbackSection = ({ initialData, setInitialData }) => {
                         onClick={handleAddFeedback}
                     >
                         <FaPlus size={32} color="gray" />
-                        <Text mt={2} color="gray">Add Feedback</Text>
+                        <Text mt={2} color="gray">Faire un retour</Text>
                     </Flex>
                 )}
             </Flex>

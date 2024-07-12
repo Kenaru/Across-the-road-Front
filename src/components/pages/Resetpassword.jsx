@@ -42,7 +42,7 @@ function Resetpassword() {
       <Flex minHeight="100vh" align="center" justify="center">
         <VStack spacing={4} bg="whiteAlpha.200" p={8} borderRadius="20px" boxShadow="0 4px 8px rgba(255, 255, 255, 0.3)" width="100%" maxW="400px">
           <Image src={logo} alt="Logo" boxSize="150px" />
-          <Text fontSize="2xl">Reset Password</Text>
+          <Text fontSize="2xl">Reinitialiser le mot de passe</Text>
           {error && <Text color="red.500">{error}</Text>}
           <form onSubmit={handleReset} style={{ width: '100%' }}>
             <VStack spacing={4}>
@@ -52,11 +52,11 @@ function Resetpassword() {
               <FormControl isRequired>
                 <Input color="Black" name="confirmPassword" placeholder="Confirm Password" type="password" value={formData.confirmPassword} onChange={handleChange} autoComplete="on" bg="white" />
               </FormControl>
-              <Button type="submit" colorScheme="purple" width="full">Reset</Button>
+              <Button type="submit" colorScheme="purple" width="full">Supprimer</Button>
             </VStack>
           </form>
           <RouterLink to="/login">
-            <Text mt={4} color="red.500" >Login</Text>
+            <Text mt={4} color="red.500" >Se connecter</Text>
           </RouterLink>
         </VStack>
       </Flex>
