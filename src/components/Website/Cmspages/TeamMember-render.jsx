@@ -5,7 +5,7 @@ const TeamMember = ({ initialData }) => {
     return (
         <Flex color="white" direction="column" align="center" padding="5rem">
             <Box mb="4" w="full" textAlign="center">
-                <Heading as="h2" size="xl" mb="4">Team Members</Heading>
+                <Heading as="h2" size="xl" mb="4">Les mebres de nos équipes</Heading>
             </Box>
             <Flex wrap="wrap" justify="center" gap="4">
                 {initialData.map(member => (

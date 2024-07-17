@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Box, Image, IconButton, Text, Switch, useToast, Button } from '@chakra-ui/react';
 import { FaUpload } from 'react-icons/fa';
 import { useAuth } from '../../../api/authContext';
 import { uploadFooterLogo } from '../../../api/API';
+import axios from 'axios';
 
 const Footer = ({ pageId }) => {
-    const [previewLogo, setPreviewLogo] = useState('');
+    const [logoUrl, setLogoUrl] = useState('');
     const [isEditable, setIsEditable] = useState(false);
     const toast = useToast();
     const { authToken, userId } = useAuth();
+
+    useEffect(() => {
+        // Fetch the existing logo URL when the component mounts
+        const fetchLogoUrl = async () => {
+            try {
+                const response = await axios.get(`/api/footer/${pageId}`);
+                setLogoUrl(response.data.logo);
+            } catch (error) {
+                console.error('Error fetching logo URL:', error);
+            }
+        };
+
+        fetchLogoUrl();
+    }, [pageId]);
 
     const handleLogoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const newLogoUrl = URL.createObjectURL(file);
-            setPreviewLogo(newLogoUrl);
+            setLogoUrl(newLogoUrl);
         }
     };
 
@@ -42,9 +57,9 @@ const Footer = ({ pageId }) => {
 
             try {
                 console.log('Uploading logo...');
-                await uploadFooterLogo(formData, authToken);
+                const response = await uploadFooterLogo(formData, authToken);
                 console.log('Logo uploaded successfully');
-                setPreviewLogo('');
+                setLogoUrl(response.data.logoUrl); // Update the logo URL with the URL returned from the backend
                 toast({
                     title: 'Logo updated',
                     description: 'The logo has been updated successfully.',
@@ -68,8 +83,8 @@ const Footer = ({ pageId }) => {
     return (
         <Flex direction="column" align="center" justify="center" textAlign="center" fontFamily="Poppins" borderTop="2px solid #ffffff" borderRadius="20px" padding="1.5rem" bg="#010132" width="100%" margin="0">
             <Box>
-                {previewLogo ? (
-                    <Image color="white" src={previewLogo} alt="Logo" boxSize="70px" />
+                {logoUrl ? (
+                    <Image color="white" src={logoUrl} alt="Logo" boxSize="70px" />
                 ) : (
                     <Box
                         width="70px"

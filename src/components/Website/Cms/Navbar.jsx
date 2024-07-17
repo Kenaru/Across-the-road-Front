@@ -1,20 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Flex, Box, Image, IconButton, Text, Switch, useToast, Button } from '@chakra-ui/react';
 import { FaUpload } from 'react-icons/fa';
 import { useAuth } from '../../../api/authContext';
 import { uploadNavbarLogo } from '../../../api/API';
+import axios from 'axios';
 
 const Navbar = ({ pageId }) => {
-    const [previewLogo, setPreviewLogo] = useState('');
+    const [logoUrl, setLogoUrl] = useState('');
     const [isEditable, setIsEditable] = useState(false);
     const toast = useToast();
     const { authToken, userId } = useAuth();
+
+    useEffect(() => {
+        // Fetch the existing logo URL when the component mounts
+        const fetchLogoUrl = async () => {
+            try {
+                const response = await axios.get(`/api/navbar/${pageId}`);
+                setLogoUrl(response.data.logo);
+            } catch (error) {
+                console.error('Error fetching logo URL:', error);
+            }
+        };
+
+        fetchLogoUrl();
+    }, [pageId]);
 
     const handleLogoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const newLogoUrl = URL.createObjectURL(file);
-            setPreviewLogo(newLogoUrl);
+            setLogoUrl(newLogoUrl);
         }
     };
 
@@ -42,9 +57,9 @@ const Navbar = ({ pageId }) => {
 
             try {
                 console.log('Uploading logo...');
-                await uploadNavbarLogo(formData, authToken);
+                const response = await uploadNavbarLogo(formData, authToken);
                 console.log('Logo uploaded successfully');
-                setPreviewLogo('');
+                setLogoUrl(response.data.logoUrl); // Update the logo URL with the URL returned from the backend
                 toast({
                     title: 'Logo updated',
                     description: 'The logo has been updated successfully.',
@@ -69,8 +84,8 @@ const Navbar = ({ pageId }) => {
         <Flex width="100%" direction="column" position="sticky" top="0" zIndex="1000">
             <Flex bgGradient="linear(to-r, #010132, #6f13ad)" color="white" p="20px" alignItems="center" justifyContent="space-between" boxShadow="0 8px 16px rgba(255, 255, 255, 0.5)">
                 <Flex alignItems="center">
-                    {previewLogo ? (
-                        <Image src={previewLogo} alt="Logo" width="60px" height="50px" cursor="pointer" />
+                    {logoUrl ? (
+                        <Image src={logoUrl} alt="Logo" width="60px" height="50px" cursor="pointer" />
                     ) : (
                         <Box
                             width="60px"

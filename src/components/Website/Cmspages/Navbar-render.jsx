@@ -19,7 +19,7 @@ const Navbar = ({ initialData }) => {
                         </Box>
                     )}
                 </Flex>
-                <List display="flex">
+                <List display="flex" alignItems="center">
                     {links.map(link => (
                         <ListItem key={link.id} ml="20px" display="flex" alignItems="center">
                             <a href={link.url} style={{ color: 'white', textDecoration: 'none' }}>{link.title}</a>

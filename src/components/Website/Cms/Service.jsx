@@ -12,7 +12,7 @@ const Service = ({ initialData = [] }) => {
         id: Math.random().toString(36).substr(2, 9),
         title: "Default Service",
         content: "This is the default service content.",
-        imgUrl: '', // single field for image URL
+        imgUrl: '', 
         imageFile: null
     };
 
@@ -55,12 +55,12 @@ const Service = ({ initialData = [] }) => {
         const file = event.target.files[0];
         if (file) {
             const newImageUrl = URL.createObjectURL(file);
-            console.log('New Image URL:', newImageUrl); // Log the new image URL
+            console.log('New Image URL:', newImageUrl); 
             const updatedServices = services.map(service =>
                 service.id === id ? { ...service, imgUrl: newImageUrl, imageFile: file } : service
             );
             setServices(updatedServices);
-            setCurrentService(updatedServices.find(service => service.id === id)); // Update currentService with the new image URL
+            setCurrentService(updatedServices.find(service => service.id === id)); 
         }
     };
 
@@ -158,7 +158,7 @@ const Service = ({ initialData = [] }) => {
                         display="flex"
                         flexDirection="column"
                         justifyContent="center"
-                        bg="gray.800"
+                        bg="#010132"
                         boxShadow="lg"
                         borderRadius="md"
                         textAlign="left"

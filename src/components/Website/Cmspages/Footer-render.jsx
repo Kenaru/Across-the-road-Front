@@ -31,7 +31,7 @@ const Footer = ({ initialData }) => {
                 )}
             </Box>
             <Text fontSize="sm" color="white" mt="20px">
-                © 2024 Copyright
+                Across The Road © 2024 Copyright
             </Text>
         </Flex>
     );

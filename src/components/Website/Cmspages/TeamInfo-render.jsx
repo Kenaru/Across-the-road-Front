@@ -15,3 +15,4 @@ const TeamInfo = ({ initialData }) => {
 };
 
 export default TeamInfo;
+  

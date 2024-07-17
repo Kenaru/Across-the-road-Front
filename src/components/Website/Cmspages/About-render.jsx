@@ -27,4 +27,5 @@ const About = ({ initialData }) => {
     );
 };
 
-export default About;
+export default About; 
+  
