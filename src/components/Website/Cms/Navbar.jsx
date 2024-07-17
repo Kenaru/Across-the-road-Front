@@ -3,33 +3,20 @@ import { Flex, Box, Image, IconButton, Text, Switch, useToast, Button } from '@c
 import { FaUpload } from 'react-icons/fa';
 import { useAuth } from '../../../api/authContext';
 import { uploadNavbarLogo } from '../../../api/API';
-import axios from 'axios';
 
 const Navbar = ({ pageId }) => {
     const [logoUrl, setLogoUrl] = useState('');
     const [isEditable, setIsEditable] = useState(false);
+    const [previewUrl, setPreviewUrl] = useState(null);
     const toast = useToast();
     const { authToken, userId } = useAuth();
-
-    useEffect(() => {
-        // Fetch the existing logo URL when the component mounts
-        const fetchLogoUrl = async () => {
-            try {
-                const response = await axios.get(`/api/navbar/${pageId}`);
-                setLogoUrl(response.data.logo);
-            } catch (error) {
-                console.error('Error fetching logo URL:', error);
-            }
-        };
-
-        fetchLogoUrl();
-    }, [pageId]);
 
     const handleLogoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
             const newLogoUrl = URL.createObjectURL(file);
-            setLogoUrl(newLogoUrl);
+            setPreviewUrl(newLogoUrl);
+            setLogoUrl(newLogoUrl);  // Update logoUrl for immediate display
         }
     };
 
@@ -51,15 +38,12 @@ const Navbar = ({ pageId }) => {
 
         if (file) {
             const formData = new FormData();
-            formData.append('navbar_image', file); // Ensure this matches the field name in backend
+            formData.append('navbar_image', file); 
             formData.append('userId', userId);
             formData.append('pageId', pageId);
 
             try {
-                console.log('Uploading logo...');
-                const response = await uploadNavbarLogo(formData, authToken);
-                console.log('Logo uploaded successfully');
-                setLogoUrl(response.data.logoUrl); // Update the logo URL with the URL returned from the backend
+                await uploadNavbarLogo(formData, authToken);
                 toast({
                     title: 'Logo updated',
                     description: 'The logo has been updated successfully.',
