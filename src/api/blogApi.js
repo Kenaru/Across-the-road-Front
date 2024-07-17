@@ -1,55 +1,53 @@
-import api from './axiosConfig';
+import apiClient from './apiClient';
 
-export const createPost = async (formData) => {
+export const getAllPosts = async (authToken) => {
     try {
-        const response = await api.post('/api/post/posts', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+        const response = await apiClient.get('/posts', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            },
         });
         return response.data;
     } catch (error) {
-        console.error('Creating post failed:', error.response?.data);
-        throw new Error('Failed to create post: ' + (error.response?.data.message || error.message));
+        console.error('Error fetching posts:', error);
+        throw error;
     }
 };
 
-export const getAllPosts = async () => {
-    try {
-        const response = await api.get('/api/get/posts');
-        return response.data;
-    } catch (error) {
-        console.error('Fetching all posts failed:', error.response?.data);
-        throw new Error('Failed to fetch posts: ' + (error.response?.data.message || error.message));
-    }
+export const createPost = async (post) => {
+    const response = await apiClient.post('/posts', post);
+    return response.data;
 };
 
-export const getPostById = async (id) => {
-    try {
-        const response = await api.get(`/api/get/posts/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error(`Fetching post with ID ${id} failed:`, error.response?.data);
-        throw new Error('Failed to fetch post: ' + (error.response?.data.message || error.message));
-    }
-};
-
-export const updatePost = async (id, formData) => {
-    try {
-        const response = await api.put(`/api/put/posts/${id}`, formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
-        });
-        return response.data;
-    } catch (error) {
-        console.error(`Updating post with ID ${id} failed:`, error.response?.data);
-        throw new Error('Failed to update post: ' + (error.response?.data.message || error.message));
-    }
+export const updatePost = async (id, post) => {
+    const response = await apiClient.put(`/posts/${id}`, post, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    return response.data;
 };
 
 export const deletePost = async (id) => {
+    const response = await apiClient.delete(`/posts/${id}`);
+    return response.data;
+};
+
+export const createComment = async (comment) => {
+    const response = await apiClient.post('/comments', comment);
+    return response.data;
+};
+
+export const getAllComments = async (authToken) => {
     try {
-        const response = await api.delete(`/api/delete/posts/${id}`);
+        const response = await apiClient.get('/comments', {
+            headers: {
+                Authorization: `Bearer ${authToken}`
+            },
+        });
         return response.data;
     } catch (error) {
-        console.error(`Deleting post with ID ${id} failed:`, error.response?.data);
-        throw new Error('Failed to delete post: ' + (error.response?.data.message || error.message));
+        console.error('Error fetching comments:', error);
+        throw error;
     }
 };

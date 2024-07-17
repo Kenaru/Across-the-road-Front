@@ -17,7 +17,7 @@ const CreateCMS = ({ toggleCMS }) => {
             maxWidth="960px"  
         >
             <Image src={logo} alt="Website Logo" width="500px" mb="2" /> 
-            <Heading color="white" fontSize="4xl" mb="2">Créez simplement votre site web</Heading>
+            <Heading color="white" fontSize="4xl" mb="2">Créez votre site web</Heading>
             <Text color="white" fontSize="2xl" mb="4">Commencez en cliquant sur le bouton ci-dessous !</Text>
             <Flex
                 direction="row"  

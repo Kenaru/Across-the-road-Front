@@ -1,4 +1,5 @@
-import apiClient from './axiosConfig';
+import apiClient from './apiClient';
+
 
 export const login = async (credentials) => {
   try {
@@ -12,7 +13,7 @@ export const login = async (credentials) => {
 
     const { token, user } = response.data;
 
-    // Store token and user ID in localStorage (if needed, can be done here or in the calling component)
+
     localStorage.setItem('authToken', token);
     localStorage.setItem('userId', user.id);
     localStorage.setItem('userName', user.name);
@@ -34,18 +35,7 @@ export const register = async (credentials) => {
   }
 };
 
-export const logout = async () => {
-  try {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userName');
-    await apiClient.post('/logout');
-    console.log('Logged out successfully');
-  } catch (error) {
-    console.error('Logout error:', error);
-    throw new Error('Failed to log out: ' + (error.response ? error.response.data.message : error.message));
-  }
-};
+
 
 export const resetPassword = async (email) => {
   try {
@@ -56,3 +46,30 @@ export const resetPassword = async (email) => {
     throw new Error('Failed to reset password: ' + (error.response?.data.message || error.message));
   }
 };
+
+
+export const getProfile = async () => {
+  try {
+    console.log('Fetching profile');
+    const response = await apiClient.get('/profile');
+    console.log('Profile fetched:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch profile:', error.response?.data);
+    throw new Error('Failed to fetch profile: ' + (error.response?.data.message || error.message));
+  }
+};
+
+
+export const updateProfile = async (profileData) => {
+  try {
+    console.log('Updating profile with data:', profileData);
+    const response = await apiClient.put('/profile', profileData);
+    console.log('Profile update response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to update profile:', error.response?.data);
+    throw new Error('Failed to update profile: ' + (error.response?.data.message || error.message));
+  }
+};
+

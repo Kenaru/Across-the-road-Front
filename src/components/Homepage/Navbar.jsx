@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Flex, Button, Image, List, ListItem, Text, Box } from '@chakra-ui/react';
 import logo from '../../assets/logo_b.png';
-import defaultLogo from '../../assets/user.png';
+import { useAuth } from '../../api/authContext';
+import { getProfile } from '../../api/authApi';
+import { FaUserCircle } from 'react-icons/fa';
 
 const navLinks = [
   {
@@ -10,41 +12,43 @@ const navLinks = [
     title: "Home",
   },
   {
-    id: "services",
-    title: "Services",
-  },
-  {
-    id: "about",
-    title: "About",
-  },
-  {
     id: "blog",
     title: "Blog",
   },
   {
-    id: "associations",
-    title: "Associations",
+    id: "Admin",
+    title: "admin",
   }
 ];
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userName, setUserName] = useState('');
+  const { authToken, userId, logout } = useAuth();
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('userToken');
-    setIsAuthenticated(!!token);
+    if (authToken && userId) {
+      const fetchUserName = async () => {
+        try {
+          const data = await getProfile();
+          setUsername(data.user.first_name + ' ' + data.user.last_name);
+          localStorage.setItem('userName', data.user.first_name + ' ' + data.user.last_name);
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+        }
+      };
 
-    const storedUserName = localStorage.getItem('userName');
-    setUserName(storedUserName || 'User');
-  }, []);
+      fetchUserName();
+    }
+  }, [authToken, userId]);
 
   const handleLogout = () => {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userName');
-    setIsAuthenticated(false);
+    logout();
     navigate('/login');
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
   };
 
   return (
@@ -62,10 +66,8 @@ const Navbar = () => {
           right={0}
           zIndex={999}
       >
-        {/* Website logo on the left */}
         <Image src={logo} alt="Website Logo" htmlWidth="60px" htmlHeight="50px" cursor="pointer" onClick={() => navigate('/')} />
 
-        {/* Centered navigation links */}
         <List display="flex" flexDirection="row" flexGrow={1} justifyContent="center">
           {navLinks.map((link) => (
               <ListItem key={link.id} px={4}>
@@ -78,16 +80,17 @@ const Navbar = () => {
           ))}
         </List>
 
-        {/* User or default logo and logout/login on the right */}
         <Flex align="center" direction="column">
-          <Image src={defaultLogo} alt="User Logo" htmlWidth="30px" htmlHeight="30px" cursor="pointer" />
-          {isAuthenticated ? (
-              <Box textAlign="center" mt={2}>
-                <Text fontSize="1rem">{userName}</Text>
-                <Button onClick={handleLogout} variant="link" mt={2}>
-                  <Text _hover={{ textDecoration: 'underline' }}>Logout</Text>
-                </Button>
-              </Box>
+          {authToken ? (
+              <>
+                <FaUserCircle size="30px" cursor="pointer" onClick={handleProfileClick} />
+                <Box textAlign="center" mt={2}>
+                  <Text fontSize="1rem">{username || 'User'}</Text>
+                  <Button onClick={handleLogout} variant="link" mt={2}>
+                    <Text _hover={{ textDecoration: 'underline' }}>Logout</Text>
+                  </Button>
+                </Box>
+              </>
           ) : (
               <RouterLink to="/login">
                 <Text fontSize="1rem" _hover={{ textDecoration: 'underline' }}>

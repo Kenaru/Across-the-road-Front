@@ -79,7 +79,7 @@ const Event = () => {
         <>
             <Box align="center">
                 <Button onClick={() => { setEditedPost(null); setNewPost({ title: "", content: "", image: null }); onOpen(); }} colorScheme="teal" mb={4}>
-                    Ajouter un Nouveau Post
+                    Add New Post
                 </Button>
             </Box>
             {posts.map(post => (
@@ -120,13 +120,13 @@ const Event = () => {
                             }}
                         >
                             <Button flex='1' variant='ghost' leftIcon={<BiLike />}>
-                                Jaime
+                                Like
                             </Button>
                             <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
-                                Commenter
+                                Comment
                             </Button>
                             <Button flex='1' variant='ghost' leftIcon={<BiShare />}>
-                                Partager
+                                Share
                             </Button>
                         </CardFooter>
                     </Card>
@@ -146,9 +146,9 @@ const Event = () => {
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={handleSave}>
-                            Sauvegarder
+                            Save
                         </Button>
-                        <Button variant="ghost" onClick={onClose}>Retour</Button>
+                        <Button variant="ghost" onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

@@ -1,44 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Link as ChakraLink, Flex, Button, Image, List, ListItem, Text, IconButton, Switch, Stack } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { Flex, Box, Image, IconButton, Text, Switch, useToast, Button } from '@chakra-ui/react';
 import { FaUpload } from 'react-icons/fa';
+import { useAuth } from '../../../api/authContext';
+import { uploadNavbarLogo } from '../../../api/API';
 
-const Navbar = ({ initialData, setInitialData }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
-    const [logo, setLogo] = useState(initialData.logo || '');
-    const [editMode, setEditMode] = useState(false);
-
-    const links = [
-        { id: 'home', title: 'Home', url: '/' },
-        { id: 'services', title: 'Services', url: '/services' },
-        { id: 'about', title: 'About', url: '/about' },
-        { id: 'blog', title: 'Blog', url: '/blog' },
-        { id: 'associations', title: 'Associations', url: '/associations' },
-    ];
-
-    useEffect(() => {
-        if (initialData) {
-            setLogo(initialData.logo);
-        }
-    }, [initialData]);
-
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
-    };
-
-    const toggleEditMode = () => {
-        setEditMode(!editMode);
-    };
+const Navbar = ({ pageId }) => {
+    const [previewLogo, setPreviewLogo] = useState('');
+    const [isEditable, setIsEditable] = useState(false);
+    const toast = useToast();
+    const { authToken, userId } = useAuth();
 
     const handleLogoChange = (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setLogo(reader.result);
-                setInitialData({ ...initialData, logo: reader.result });
-            };
-            reader.readAsDataURL(file);
+            const newLogoUrl = URL.createObjectURL(file);
+            setPreviewLogo(newLogoUrl);
+        }
+    };
+
+    const handleSaveLogo = async () => {
+        const fileInput = document.getElementById('logoInput');
+        const file = fileInput.files[0];
+
+        if (!userId) {
+            console.error('User ID is not available');
+            toast({
+                title: 'Error',
+                description: 'User ID is not available.',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            });
+            return;
+        }
+
+        if (file) {
+            const formData = new FormData();
+            formData.append('navbar_image', file); // Ensure this matches the field name in backend
+            formData.append('userId', userId);
+            formData.append('pageId', pageId);
+
+            try {
+                console.log('Uploading logo...');
+                await uploadNavbarLogo(formData, authToken);
+                console.log('Logo uploaded successfully');
+                setPreviewLogo('');
+                toast({
+                    title: 'Logo updated',
+                    description: 'The logo has been updated successfully.',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                });
+            } catch (error) {
+                console.error('Error uploading logo:', error);
+                toast({
+                    title: 'Error',
+                    description: 'Failed to upload logo.',
+                    status: 'error',
+                    duration: 3000,
+                    isClosable: true,
+                });
+            }
         }
     };
 
@@ -46,8 +69,8 @@ const Navbar = ({ initialData, setInitialData }) => {
         <Flex width="100%" direction="column" position="sticky" top="0" zIndex="1000">
             <Flex bgGradient="linear(to-r, #010132, #6f13ad)" color="white" p="20px" alignItems="center" justifyContent="space-between" boxShadow="0 8px 16px rgba(255, 255, 255, 0.5)">
                 <Flex alignItems="center">
-                    {logo ? (
-                        <Image src={logo} alt="Logo" htmlWidth="60px" htmlHeight="50px" cursor="pointer" />
+                    {previewLogo ? (
+                        <Image src={previewLogo} alt="Logo" width="60px" height="50px" cursor="pointer" />
                     ) : (
                         <Box
                             width="60px"
@@ -62,7 +85,7 @@ const Navbar = ({ initialData, setInitialData }) => {
                             <Text color="white">Logo</Text>
                         </Box>
                     )}
-                    {editMode && (
+                    {isEditable && (
                         <>
                             <IconButton
                                 icon={<FaUpload />}
@@ -74,27 +97,14 @@ const Navbar = ({ initialData, setInitialData }) => {
                                 size="sm"
                             />
                             <input id="logoInput" type="file" accept="image/*" onChange={handleLogoChange} style={{ display: 'none' }} />
+                            <Button onClick={handleSaveLogo} ml={2} colorScheme="blue">Save</Button>
                         </>
                     )}
                 </Flex>
-                <List display="flex">
-                    {links.map(link => (
-                        <ListItem key={link.id} ml="20px" display="flex" alignItems="center">
-                            <ChakraLink href={link.url}>{link.title}</ChakraLink>
-                        </ListItem>
-                    ))}
-                </List>
-                <Stack direction="row" align="center">
-                    <Switch isChecked={editMode} onChange={toggleEditMode} />
-                    <Text ml={2}>Mode écriture</Text>
-                </Stack>
-                {isAuthenticated ? (
-                    <Button onClick={handleLogout} bg="transparent" color="white" _hover={{ bg: 'whiteAlpha.200' }}>Se déconnecter</Button>
-                ) : (
-                    <ChakraLink href="/login">
-                        <Text color="white" _hover={{ textDecoration: 'underline' }}>Se connecter</Text>
-                    </ChakraLink>
-                )}
+                <Flex alignItems="center">
+                    <Switch isChecked={isEditable} onChange={() => setIsEditable(!isEditable)} />
+                    <Text ml={2}>Edit Mode</Text>
+                </Flex>
             </Flex>
         </Flex>
     );

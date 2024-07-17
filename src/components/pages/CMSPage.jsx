@@ -1,83 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
-// Import Box from Chakra UI for styling
+import { Flex, Heading, Spinner } from '@chakra-ui/react';
+import { fetchPageById } from '../../api/cmsApi';
 
-// Import StatsSection component
-import StatsSection from './StatsSection';
-import { Box } from '@chakra-ui/react';
+import About from '../Website/Cmspages/About-render';
+import Navbar from '../Website/Cmspages/Navbar-render';
+import Footer from '../Website/Cmspages/Footer-render';
 
-// Importing other components dynamically based on fetched data also find a way to implement this is the back end 
-const componentImports = {
-  Navbar: React.lazy(() => import('../Website/Cms/Navbar')),
-  About: React.lazy(() => import('../Website/Cms/About')),
-  FeedbackSection: React.lazy(() => import('../Website/Cms/FeedbackSection')),
-  Service: React.lazy(() => import('../Website/Cms/Service')),
-  Footer: React.lazy(() => import('../Website/Cms/Footer')),
-  StatsSection: StatsSection, // Include StatsSection in componentImports
-};
+import Service from '../Website/Cmspages/Service-render';
+import TeamInfo from '../Website/Cmspages/TeamInfo-render';
+import TeamMember from '../Website/Cmspages/TeamMember-render';
 
 const CMSPage = () => {
-  const { id } = useParams();
-  const [pageData, setPageData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const { id } = useParams();
+    const [pageData, setPageData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (!id) return;
+    useEffect(() => {
+        const getPageData = async () => {
+            try {
+                const response = await fetchPageById(id);
+                setPageData(response.data);
+            } catch (error) {
+                setError(error.message || 'Failed to fetch data');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    // Fetch page data based on the ID
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(`/AssoWebsite/${id}`);
-        setPageData(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError(error.message);
-        setLoading(false);
-      }
-    };
+        getPageData();
+    }, [id]);
 
-    fetchData();
-  }, [id]);
+    if (loading) {
+        return (
+            <Flex justify="center" align="center" height="100vh">
+                <Spinner size="xl" />
+            </Flex>
+        );
+    }
 
-  if (loading) {
-    return <div>Chargement...</div>;
-  }
+    if (error) {
+        return (
+            <Flex justify="center" align="center" height="100vh">
+                <Heading color="white">{error}</Heading>
+            </Flex>
+        );
+    }
 
-  if (error) {
-    return <div>Erreur: {error}</div>;
-  }
+    if (!pageData) {
+        return (
+            <Flex justify="center" align="center" height="100vh">
+                <Heading color="white">Page not found</Heading>
+            </Flex>
+        );
+    }
 
-  if (!pageData) {
-    return <div>No data found for this page.</div>;
-  }
-
-  // Render components based on page data
-  const renderComponents = () => {
-    return pageData.components.map((component, index) => {
-      const Component = componentImports[component.type];
-      if (!Component) return null; 
-
-      return (
-        <React.Suspense key={index} fallback={<div>Chargement...</div>}>
-           
-            <Component content={component.content} />
-        
-        </React.Suspense>
-      );
-    });
-  };
-
-  return (
-    <Box bg="#010132">
-    <React.Suspense fallback={<div>Chargement...</div>}>
-      {renderComponents()}
-    </React.Suspense>
-    </Box>
-  );
+    return (
+        <Flex direction="column" width="100%" bg="#010132" p={4}>
+            <Navbar initialData={pageData.navbar} />
+            <About initialData={pageData.aboutSections} />
+            <Service initialData={pageData.services} />
+            <TeamInfo initialData={pageData.teamInfo} />
+            <TeamMember initialData={pageData.teamMembers} />
+            <Footer initialData={pageData.footer} />
+        </Flex>
+    );
 };
 
 export default CMSPage;
-
-
