@@ -1,27 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Flex, Image, Text } from '@chakra-ui/react';
-import { fetchPageById } from '../../../api/cmsApi';
 
-const About = ({ pageId }) => {
-    const [aboutData, setAboutData] = useState([]);
-
-    useEffect(() => {
-        const fetchAboutData = async () => {
-            try {
-                const response = await fetchPageById(pageId);
-                setAboutData(response.data.aboutSections || []);
-            } catch (error) {
-                console.error('Error fetching about data:', error);
-            }
-        };
-
-        fetchAboutData();
-    }, [pageId]);
-
+const About = ({ initialData }) => {
     return (
         <Flex direction="column" align="center" justify="center" minHeight="100vh" color="white" width="100%" p="5rem">
             <Flex wrap="wrap" justify="center" gap={4}>
-                {aboutData.map(section => (
+                {initialData.map(section => (
                     <Flex key={section.id} direction="row" align="center" w="full" minHeight="100vh">
                         {section.imageUrl ? (
                             <Box flex="1" height="50vh" display="flex" justifyContent="center" alignItems="center">

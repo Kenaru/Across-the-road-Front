@@ -2,27 +2,40 @@ import React, { Component } from 'react';
 import { Box, Heading, Text, Button, SimpleGrid, Center } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { fetchAllPages } from '../../api/cmsApi';
+import withNavigation from './withNavigation'; // Import the wrapper component
 
 class CMSAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
             websitePages: [],
+            error: null,
         };
     }
 
     componentDidMount() {
-        fetchAllPages()
-            .then((response) => {
-                this.setState({ websitePages: response.data });
-            })
-            .catch((error) => {
-                console.error('Error fetching website pages:', error);
-            });
+        this.fetchWebsitePages();
     }
 
+    fetchWebsitePages = async () => {
+        try {
+            const pages = await fetchAllPages();
+            console.log('API response:', pages); // Log the response to debug its structure
+            this.setState({ websitePages: pages });
+        } catch (error) {
+            this.setState({ error: error.message });
+            console.error('Error fetching website pages:', error);
+            if (error.response && error.response.status === 401) {
+                // Redirect to login or handle unauthorized access
+                console.error('Unauthorized access - redirecting to login');
+                // Redirect to login page or display a message
+                this.props.navigate('/login'); // Use this.props.navigate provided by the wrapper
+            }
+        }
+    };
+
     render() {
-        const { websitePages } = this.state;
+        const { websitePages, error } = this.state;
 
         return (
             <Box bg="#010132" p="20px" minHeight="100vh">
@@ -32,6 +45,7 @@ class CMSAdmin extends Component {
                             <Heading as="h1" size="xl" mb="40px" color="white" textAlign="center">
                                 Website Pages
                             </Heading>
+                            {error && <Text color="red">{error}</Text>}
                             <SimpleGrid columns={[1, 2, 3]} spacing="40px">
                                 {websitePages.map((page) => (
                                     <Box
@@ -63,4 +77,4 @@ class CMSAdmin extends Component {
     }
 }
 
-export default CMSAdmin;
+export default withNavigation(CMSAdmin); // Wrap with withNavigation

@@ -8,7 +8,7 @@ import About from '../Homepage/About';
 import TeamSection from '../Homepage/TeamSection';
 import CreateCMS from '../Homepage/CreateCMS';
 
-// Define keyframes for the background animation
+
 const gradient = keyframes`
     0% { background-position: 0 50%; }
     50% { background-position: 100% 50%; }

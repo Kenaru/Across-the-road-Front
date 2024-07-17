@@ -9,10 +9,12 @@ import Resetpassword from './components/pages/Resetpassword';
 import CMSItem from './components/pages/CMSItem';
 import CMSAdmin from './components/pages/CMSAdmin';
 import CMSPage from './components/pages/CMSPage';
+import AdminDashBoard from './components/Homepage/AdminDashBoard';
 import Blog from './components/Homepage/Blog';
 import Activity1 from './components/pages/Activity1';
 import Activity2 from './components/pages/Activity2';
 import Activity3 from './components/pages/Activity3';
+
 
 
 function App() {
@@ -32,7 +34,7 @@ function App() {
                     <Route path="/activity2" element={<Activity2 />} />
                     <Route path="/activity3" element={<Activity3 />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/admin" element={<CMSAdmin/>} />
+                    <Route path="/admin" element={<AdminDashBoard/>} />
                 </Routes>
             </Router>
         </AuthProvider>

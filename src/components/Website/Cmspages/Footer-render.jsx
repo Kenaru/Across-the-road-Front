@@ -8,7 +8,7 @@ const Footer = ({ initialData }) => {
         if (initialData.logo) {
             setLogo(initialData.logo);
         }
-    }, [initialData]);
+    }, [initialData]); 
 
     return (
         <Flex direction="column" align="center" justify="center" textAlign="center" fontFamily="Poppins" borderTop="2px solid #ffffff" borderRadius="20px" padding="1.5rem" background="linear-gradient(270deg, #010132 100%, #6f13ad 0%)" width="100%" margin="0">

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, TextField, Button, Grid, Avatar, Typography, Box } from '@mui/material';
+import { Card, CardContent, TextField, Button, Grid, Avatar, Typography, Box, CircularProgress } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { getProfile, updateProfile } from '../../api/authApi';
@@ -97,11 +97,15 @@ const Profile = () => {
     }
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bg="#010132">
+                <CircularProgress color="inherit" />
+            </Box>
+        );
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" color="red">{error}</Box>;
     }
 
     const fullName = `${profileData.firstName} ${profileData.lastName}`;
@@ -209,25 +213,29 @@ const Profile = () => {
                             My Pages
                         </Typography>
                         <Grid container spacing={3}>
-                            {userPages.map((page) => (
-                                <Grid item xs={12} sm={6} md={4} key={page.id}>
-                                    <Card
-                                        onClick={() => handlePageClick(page.id)}
-                                        style={{
-                                            cursor: 'pointer',
-                                            backgroundColor: '#fff',
-                                            color: '#000',
-                                        }}
-                                    >
-                                        <CardContent>
-                                            <Typography variant="h6">{page.title}</Typography>
-                                            <Typography variant="body2" color="textSecondary">
-                                                {page.url}
-                                            </Typography>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            ))}
+                            {userPages.length > 0 ? (
+                                userPages.map((page) => (
+                                    <Grid item xs={12} sm={6} md={4} key={page.pageId}>
+                                        <Card
+                                            onClick={() => handlePageClick(page.pageId)}
+                                            style={{
+                                                cursor: 'pointer',
+                                                backgroundColor: '#fff',
+                                                color: '#000',
+                                            }}
+                                        >
+                                            <CardContent>
+                                                <Typography variant="h6">{page.title}</Typography>
+                                                <Typography variant="body2" color="textSecondary">
+                                                    {page.url}
+                                                </Typography>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                ))
+                            ) : (
+                                <Typography variant="body2">No pages found.</Typography>
+                            )}
                         </Grid>
                     </Grid>
                 </Grid>
