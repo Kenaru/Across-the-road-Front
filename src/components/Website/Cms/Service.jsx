@@ -134,9 +134,9 @@ const Service = ({ initialData = [] }) => {
     };
 
     return (
-        <Box mb="5rem" mt="200px" textAlign="center" maxW="1200px" mx="auto">
+        <Box mb="5rem" mt="200px" textAlign="center" maxW="1200px" mx="auto" shadow="white">
             <Heading as="h2" size="xl" mb="4rem" color="red.600">
-                Our Services
+                Les principeaux actions de nos associations
             </Heading>
             <Stack direction="row" justifyContent="center" alignItems="center" mb={4}>
                 <Text fontSize="lg" color="white" mr={2}>Edit Mode:</Text>
@@ -188,9 +188,10 @@ const Service = ({ initialData = [] }) => {
                                 {service.imgUrl ? (
                                     <Image src={service.imgUrl} alt="Service Image" objectFit="cover" height="300px" width="100%" mb={2} />
                                 ) : (
-                                    <Box height="300px" width="100%" mb={2} display="flex" justifyContent="center" alignItems="center">
-                                        <Text color="gray.500">Image Placeholder</Text>
-                                    </Box>
+                                    <Box height="300px" width="100%" mb={2} display="flex" justifyContent="center" alignItems="center" border="2px dashed gray">
+    <Text color="gray.500">Image Placeholder</Text>
+</Box>
+
                                 )}
                                 <Text mb={2} fontWeight="bold" fontSize="2xl">{service.title}</Text>
                                 <Text mb={2} fontSize="xl">{service.content}</Text>
